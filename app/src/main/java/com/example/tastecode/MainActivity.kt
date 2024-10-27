@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             TastecodeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
+                        name = "TasteCode",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
