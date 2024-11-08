@@ -1,5 +1,6 @@
 package com.example.tastecode
 
+import LoginScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -36,6 +37,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         text = "Hello $name!",
         modifier = modifier
     )
+    LoginScreen()
 }
 
 @Preview(showBackground = true)
