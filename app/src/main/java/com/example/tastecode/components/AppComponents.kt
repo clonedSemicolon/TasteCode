@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -35,6 +37,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -101,7 +104,7 @@ fun MyTextField(labelValue: String, painterResource: Painter){
 }
 
 @Composable
-fun PasswordTextField(labelValue: String, painterResource: Painter, onvisibilitychange:){
+fun PasswordTextField(labelValue: String, painterResource: Painter){
     val password = remember{
         mutableStateOf("")
     }
@@ -130,14 +133,16 @@ fun PasswordTextField(labelValue: String, painterResource: Painter, onvisibility
         },
         trailingIcon = {
             IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
-                // Directly toggle between the visibility icons
-                Icon(
+                // Directly toggle between the visibility icon
 
-
-                    imageVector = if (passwordVisible.value) Icons.Filled.Add else  Spacer(modifier = Modifier.height(40.dp)),
-                    contentDescription = if (passwordVisible.value) "Hide password" else "Show password",
-                    tint = Color.Gray
-                )
+                if (passwordVisible.value){
+                    Icon(
+                        imageVector = Icons.Filled.Favorite,
+                        contentDescription = "Favorite",
+                        tint = Color.Red,
+                        modifier = Modifier.size(48.dp)
+                    )
+                }
             }
         }
     )
