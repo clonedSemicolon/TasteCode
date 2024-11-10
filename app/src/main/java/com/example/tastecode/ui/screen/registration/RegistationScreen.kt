@@ -16,8 +16,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.tastecode.R
 import com.example.tastecode.components.NormalTextComponent
 import androidx.compose.ui.unit.dp
+import com.example.tastecode.components.ButtonComponent
 import com.example.tastecode.components.HeadingTextComponent
 import com.example.tastecode.components.MyTextField
+import com.example.tastecode.components.PasswordTextField
+import com.example.tastecode.components.CheckboxComponent
+import com.example.tastecode.components.ClickTextAlreadyAccount
+import com.example.tastecode.components.DividerText
+
 
 @Composable
 fun RegistrationScreen() {
@@ -34,7 +40,7 @@ fun RegistrationScreen() {
             Spacer(modifier = Modifier.height(20.dp))
             MyTextField(
                 labelValue= stringResource(id = R.string.first_name),
-                painterResource(id = R.drawable.img)
+                painterResource = painterResource(id = R.drawable.img)
             )
             MyTextField(
                 labelValue= stringResource(id = R.string.last_name),
@@ -44,10 +50,22 @@ fun RegistrationScreen() {
                 labelValue= stringResource(id = R.string.email),
                 painterResource = painterResource(id = R.drawable.img)
             )
-            MyTextField(
+           /* MyTextField(
+                labelValue= stringResource(id = R.string.pass_word),
+                painterResource = painterResource(id = R.drawable.img)
+            )*/
+            PasswordTextField(
                 labelValue= stringResource(id = R.string.pass_word),
                 painterResource = painterResource(id = R.drawable.img)
             )
+            CheckboxComponent(value = stringResource(id = R.string.terms_and_conditions))
+            Spacer(modifier = Modifier.height(75.dp))
+            ButtonComponent(value =stringResource(id = R.string.register))
+            Spacer(modifier = Modifier.height(20.dp))
+            DividerText()
+            Spacer(modifier = Modifier.height(20.dp))
+            ClickTextAlreadyAccount(onTextSelected = { })
+
         }
     }
 }

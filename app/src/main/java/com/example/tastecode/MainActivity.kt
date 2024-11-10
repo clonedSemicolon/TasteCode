@@ -12,6 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.tastecode.components.TastCodeAppTest
+import com.example.tastecode.ui.screen.registration.RegistrationScreen
 import com.example.tastecode.ui.theme.TastecodeTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,14 +21,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            TastecodeTheme {
+            /*TastecodeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
                         name = "Taste-Code",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
-            }
+            }*/
+            //Guna Testing
+            //RegistrationScreen()
         }
     }
 }

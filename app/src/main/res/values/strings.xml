@@ -7,4 +7,7 @@
     <string name="last_name">Last Name</string>
     <string name="email">Email</string>
     <string name="pass_word">Password</string>
+    <string name="terms_and_conditions">By continuing you accept our Privacy Policy and Term of Use</string>
+    <string name="terms_and_condition_header">Terms of Use</string>
+    <string name="register">Register</string>
 </resources>
