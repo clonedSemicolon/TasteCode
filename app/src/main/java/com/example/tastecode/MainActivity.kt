@@ -1,5 +1,6 @@
 package com.example.tastecode
 
+import LoginScreen
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
@@ -14,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import com.example.tastecode.ui.screen.splash.SplashScreen
+import com.example.tastecode.components.TastCodeAppTest
+import com.example.tastecode.ui.screen.registration.RegistrationScreen
 import com.example.tastecode.ui.theme.TastecodeTheme
 
 class MainActivity : ComponentActivity() {

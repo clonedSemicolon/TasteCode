@@ -5,5 +5,5 @@ import com.example.tastecode.R
 
 @Composable
 fun LoginScreen(){
-    Image(painterResource(R.drawable.rectangle_38),"content description")
+    //Image(painterResource(R.drawable.rectangle_38),"content description")
 }
