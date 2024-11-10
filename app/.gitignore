@@ -1,1 +1,51 @@
 /build
+
+# Android Studio specific files
+.idea/
+.gradle/
+local.properties
+build/
+*.iml
+
+# Generated files
+build/generated/
+build/intermediates/
+
+# Dependency cache
+*.lck
+*.jar
+
+# Generated Compose preview files
+**/preview_*.xml
+
+# Debug and release build artifacts
+app/build/
+app/release/
+
+# Android Studio settings
+.DS_Store
+
+# IDE specific files
+*.suo
+*.ncb
+*.suo
+*.sln
+*.user
+*.cache
+*.log
+
+# System files
+Thumbs.db
+.gitignore
+
+# Temporary files
+*.tmp
+*.swp
+*.bak
+
+# Logs and crash reports
+crash-reports/
+logs/
+
+# Keystore files
+*.keystore
