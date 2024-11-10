@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "10819943647",
+    "project_id": "tastecode-76643",
+    "storage_bucket": "tastecode-76643.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10819943647:android:b868f805130b1c0acc3d6a",
+        "android_client_info": {
+          "package_name": "com.example.tastecode"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvIn7GFrvcMM4vcZdXDaxEeOl3pBM034I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
