@@ -49,3 +49,5 @@ logs/
 
 # Keystore files
 *.keystore
+../.gradle
+../.idea
