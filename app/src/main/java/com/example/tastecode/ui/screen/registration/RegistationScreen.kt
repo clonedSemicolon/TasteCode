@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.tastecode.R
 import com.example.tastecode.components.NormalTextComponent
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.tastecode.components.ButtonComponent
 import com.example.tastecode.components.HeadingTextComponent
 import com.example.tastecode.components.MyTextField
@@ -26,7 +27,7 @@ import com.example.tastecode.components.DividerText
 
 
 @Composable
-fun RegistrationScreen() {
+fun RegistrationScreen(navHostController: NavHostController) {
 
     Surface(
         modifier = Modifier
@@ -73,6 +74,5 @@ fun RegistrationScreen() {
 @Preview
 @Composable
 fun DefaultPreviewOfRegistrationScreen(){
-    RegistrationScreen()
-
+//    RegistrationScreen()
 }

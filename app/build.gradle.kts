@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.Packaging
 
 
 plugins {
@@ -47,9 +48,7 @@ android {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
     packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+        exclude ("META-INF/DEPENDENCIES")
     }
 }
 
@@ -66,7 +65,6 @@ dependencies {
     //Guna begin
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.material.icons.extended)
-    implementation(libs.identity.jvm)
     //Guna end
     implementation(libs.firebase.database.ktx)
     testImplementation(libs.junit)
@@ -77,4 +75,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(platform(libs.firebase.bom))
+    implementation (libs.androidx.navigation.compose)
+    implementation (libs.androidx.hilt.navigation.compose)
+    implementation (libs.androidx.multidex)
 }
