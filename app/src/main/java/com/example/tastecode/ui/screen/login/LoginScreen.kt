@@ -24,10 +24,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import com.example.tastecode.business.route.Screen
 import com.example.tastecode.ui.theme.Poppins
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navHostController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -115,7 +117,14 @@ fun LoginScreen() {
             modifier = Modifier
                 .align(Alignment.End)
                 .padding(vertical = 8.dp)
-                .clickable { /* Handle forgot password */ }
+                .clickable {
+                    /* Handle forgot password */
+                    navHostController.navigate(Screen.ForgotPasswordScreen.route) {
+                        popUpTo(Screen.LoginScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -148,7 +157,13 @@ fun LoginScreen() {
         Text(
             text = "Don’t have an account? Sign up",
             color = Color(0xFFFFA726), // orange color
-            modifier = Modifier.clickable { /* Handle sign-up */ },
+            modifier = Modifier.clickable { /* Handle sign-up */
+                navHostController.navigate(Screen.UserRegistrationScreen.route) {
+                    popUpTo(Screen.UserRegistrationScreen.route) {
+                        inclusive = true
+                    }
+                }
+            },
             textAlign = TextAlign.Center
         )
     }
@@ -157,7 +172,7 @@ fun LoginScreen() {
 @Preview(showBackground = true)
 @Composable
 fun SignInScreenPreview() {
-    LoginScreen()
+    LoginScreen(navHostController = fakeNavController())
 }
 
 

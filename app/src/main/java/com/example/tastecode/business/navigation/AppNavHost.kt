@@ -14,7 +14,7 @@ fun AppNavHost(navController: NavHostController) {
             SplashScreen(navController)
         }
         composable(Screen.LoginScreen.route) {
-//            LoginScreen(navController)
+            LoginScreen(navController)
         }
         composable(Screen.UserRegistrationScreen.route) {
             RegistrationScreen(navController)
