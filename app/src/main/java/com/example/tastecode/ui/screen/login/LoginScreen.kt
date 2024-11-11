@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import com.example.tastecode.R
 import com.example.tastecode.business.route.Screen
 import com.example.tastecode.ui.theme.Poppins
 
@@ -129,27 +131,9 @@ fun LoginScreen(navHostController: NavHostController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
-            onClick = { /* Handle sign in */ },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF129575)) // Green color
-        ) {
-            Text(
-                text = "Sign In",
-                color = Color.White,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Icon(Icons.Filled.ArrowForward, contentDescription = null, tint = Color.White)
-        }
+        UserActionButton(text = stringResource(id = R.string.login))
 
         Spacer(modifier = Modifier.height(24.dp))
-
-
 
         Spacer(modifier = Modifier.height(24.dp))
 

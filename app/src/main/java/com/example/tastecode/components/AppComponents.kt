@@ -42,9 +42,13 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
 
 
@@ -89,75 +93,40 @@ fun MyTextField(labelValue: String, painterResource: Painter){
     }
 
     OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp)),
-        label = { Text(text = labelValue)},
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = colorResource(id = R.color.colorPrimary),
-            focusedLabelColor = colorResource(id = R.color.colorPrimary),
-            cursorColor = colorResource(id = R.color.colorPrimary)
-        ),
-        keyboardOptions = KeyboardOptions.Default,
-        value = textValue.value,
+        value = "",
         onValueChange = {
             textValue.value = it
         },
-        leadingIcon = {
-            Icon(painter = painterResource, contentDescription = "")
-        }
+        label = { Text(text = labelValue)},
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        shape = RoundedCornerShape(8.dp),
+        keyboardOptions = KeyboardOptions.Default,
     )
 }
 
 @Composable
-fun PasswordTextField(labelValue: String, painterResource: Painter){
-    val password = remember{
-        mutableStateOf("")
-    }
-
-    val passwordVisible = remember {
-        mutableStateOf(false)
-    }
+fun PasswordTextField(labelValue: String) {
+    var textValue by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
 
     OutlinedTextField(
+        value = textValue,
+        onValueChange = { textValue = it },
+        label = { Text(text = labelValue) },
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp)),
-        label = { Text(text = labelValue)},
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = colorResource(id = R.color.colorPrimary),
-            focusedLabelColor = colorResource(id = R.color.colorPrimary),
-            cursorColor = colorResource(id = R.color.colorPrimary),
-        ),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-        value = password.value,
-        onValueChange = {
-            password.value = it
-        },
-        leadingIcon = {
-            Icon(painter = painterResource, contentDescription = "")
-        },
+            .padding(vertical = 4.dp),
+        shape = RoundedCornerShape(8.dp),
+        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
-            IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
-                // Directly toggle between the visibility icon
-                if (passwordVisible.value){
-                    Icon(
-                        //imageVector = Icons.Filled.Favorite,
-                        imageVector = Icons.Filled.Visibility,
-                        contentDescription = "Hide Password",
-                        tint = Color.Gray,
-                        modifier = Modifier.size(48.dp)
-                    )
-                }else{
-                    Icon(
-                        imageVector = Icons.Filled.VisibilityOff,
-                        contentDescription = "Show Password",
-                        tint = Color.Gray,
-                        modifier = Modifier.size(48.dp)
-                    )
-                }
+            val image = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
+            IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                Icon(imageVector = image, contentDescription = if (passwordVisible) "Hide password" else "Show password")
             }
-        }
+        },
+        keyboardOptions = KeyboardOptions.Default,
     )
 }
 
@@ -205,101 +174,5 @@ fun ClickTermsConditions(value: String){
             .firstOrNull()?.also {span ->
                 Log.d("ClickTermsConditions","{$span}")
             }
-    })
-}
-
-@Composable
-fun ButtonComponent(value: String){
-    Button(
-        onClick = {},
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(48.dp),
-        contentPadding = PaddingValues(),
-        colors = ButtonDefaults.buttonColors(Color.Transparent)
-    ){
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(48.dp)
-                .background(
-                    brush = Brush.horizontalGradient(
-                        listOf(
-                        colorResource(id = R.color.purple_500),
-                        colorResource(id = R.color.purple_700)
-                    )
-                    ),
-                shape = RoundedCornerShape(50.dp)
-            ),
-           contentAlignment = Alignment.Center
-        ){
-            Text(text = value,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
-    }
-}
-@Composable
-fun DividerText() {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        HorizontalDivider(
-            modifier = Modifier
-                .fillMaxWidth().weight(0.5f),
-            color = Color.Green,
-            thickness = 2.dp
-        )
-        Text(
-            text = "or",
-            fontSize = 16.sp,
-            color = Black,
-            modifier = Modifier.padding(horizontal = 8.dp)
-        )
-        HorizontalDivider(
-            modifier = Modifier
-                .fillMaxWidth().weight(0.5f),
-            color = Color.Green,
-            thickness = 2.dp
-        )
-    }
-}
-//Guna New
-@Composable
-fun ClickTextAlreadyAccount(onTextSelected: (String) -> Unit){
-
-    val initialText = "Already have an account?"
-    val loginText  = "Log In"
-
-    val annotatedString = buildAnnotatedString {
-        append(initialText)
-        withStyle(style = SpanStyle(color = Color.Red)){
-            pushStringAnnotation(tag = loginText, annotation = loginText )
-            append(loginText)
-        }
-
-        }
-    ClickableText(
-        modifier = Modifier
-        .fillMaxWidth()
-        .heightIn(min = 40.dp),
-        style = TextStyle(
-            fontSize = 21.sp,
-            fontWeight = FontWeight.Normal,
-            fontStyle = FontStyle.Normal,
-            textAlign = TextAlign.Center
-        ),
-        text = annotatedString, onClick = { offset ->
-        annotatedString.getStringAnnotations(offset, offset)
-            .firstOrNull()?.also {span ->
-                Log.d("loginText","{$span}")
-                
-                if (span.item == loginText) {
-                    onTextSelected(span.item)
-                }
-            }
-
     })
 }
