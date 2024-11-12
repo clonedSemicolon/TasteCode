@@ -14,4 +14,6 @@
     <string name="create_account_msg">Let’s help you set up your account, \nit won’t take long.</string>
     <string name="login">LogIn</string>
     <string name="already_member">Already a member?</string>
+    <string name="forgot_password_msg"> No Worries!\nWe can set it again for you.</string>
+    <string name="forgot_password">Forgot Password?</string>
 </resources>
