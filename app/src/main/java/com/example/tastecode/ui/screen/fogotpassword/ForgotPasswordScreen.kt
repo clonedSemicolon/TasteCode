@@ -17,67 +17,67 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.tastecode.R
+import com.example.tastecode.ui.theme.Poppins
 
 @Composable
 fun ForgotPasswordScreen(navHostController: NavHostController) {
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(12.dp),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.Start
     ) {
 
-        Column(
+        Spacer(modifier = Modifier.height(80.dp))
+
+        Text(
+            text = stringResource(id = R.string.forgot_password),
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        Text(
+            text = stringResource(id = R.string.forgot_password_msg),
+            fontWeight = FontWeight.W500,
+            fontSize = 12.sp,
+            color = Color(0xFF121212),
+        )
+
+
+        Spacer(modifier = Modifier.height(72.dp))
+
+
+        OutlinedTextField(
+            value = "",
+            onValueChange = {},
+            label = { Text(text = "Email Address") },
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
-            horizontalAlignment = Alignment.Start
-        ) {
-            Text(text = "Forgot Password", fontSize = 24.sp, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Enter Email Address")
-        }
+                .width(350.dp)
+                .height(60.dp),
+            shape = RoundedCornerShape(8.dp)
+        )
 
-        Spacer(modifier = Modifier.height(200.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-        Column(
+        Button(
+            onClick = { },
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF129575)),
+            shape = RoundedCornerShape(8.dp),
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 32.dp),
-            horizontalAlignment = Alignment.Start
+                .width(350.dp)
+                .height(60.dp)
         ) {
-            Text(text = "Email")
-            Spacer(modifier = Modifier.height(16.dp))
+            Text(text = "Submit")
         }
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            OutlinedTextField(
-                value = "",
-                onValueChange = {},
-                label = { Text(text = "Email Address") },
-                modifier = Modifier
-                    .width(350.dp)
-                    .height(60.dp),
-                shape = RoundedCornerShape(8.dp)
-            )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = { },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF129575)),
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier
-                    .width(350.dp)
-                    .height(60.dp)
-            ) {
-                Text(text = "Submit")
-            }
-        }
     }
 }
