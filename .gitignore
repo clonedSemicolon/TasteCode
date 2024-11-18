@@ -97,3 +97,6 @@ logs/
 
 # Keystore files
 *.keystore
+
+.idea
+.gradle
