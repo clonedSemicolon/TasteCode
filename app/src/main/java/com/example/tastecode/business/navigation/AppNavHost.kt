@@ -22,5 +22,8 @@ fun AppNavHost(navController: NavHostController) {
         composable(Screen.ForgotPasswordScreen.route) {
             ForgotPasswordScreen(navController)
         }
+        composable(Screen.HomeScreen.route) {
+            HomeScreen(navController)
+        }
     }
 }

@@ -131,7 +131,11 @@ fun LoginScreen(navHostController: NavHostController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        UserActionButton(text = stringResource(id = R.string.login))
+        UserActionButton(text = stringResource(id = R.string.login), onClick = {
+            navHostController.navigate(Screen.HomeScreen.route) {
+
+            }
+        })
 
         Spacer(modifier = Modifier.height(24.dp))
 
