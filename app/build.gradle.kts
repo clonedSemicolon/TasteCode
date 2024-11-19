@@ -67,6 +67,7 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
     //Guna end
     implementation(libs.firebase.database.ktx)
+    implementation(libs.firebase.analytics)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -78,4 +79,6 @@ dependencies {
     implementation (libs.androidx.navigation.compose)
     implementation (libs.androidx.hilt.navigation.compose)
     implementation (libs.androidx.multidex)
+    implementation(platform(libs.firebase.bom.v3360))
+    implementation(libs.firebase.database)
 }

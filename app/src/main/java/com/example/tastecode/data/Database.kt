@@ -6,22 +6,16 @@ import android.util.Log
 
 class Database {
 
-    private lateinit var database: DatabaseReference
+    private val database: DatabaseReference = FirebaseDatabase.getInstance().reference
 
-    fun initializeDbRef() {
-        database = FirebaseDatabase.getInstance().reference
-    }
-
-    fun addUser(userId: String, firstName: String, lastName: String, username: String, email: String, password: String) {
-        val user = User(firstName, lastName, email, username, password)
+    fun addUser(userId: String, firstName: String, lastName: String, email: String, password: String) {
+        val user = User(firstName, lastName, email, password)
 
         database.child("users").child(userId).setValue(user)
             .addOnSuccessListener {
-
                 Log.d("DatabaseOperations", "User added successfully")
             }
             .addOnFailureListener {
-
                 Log.e("DatabaseOperations", "Failed to add user", it)
             }
     }

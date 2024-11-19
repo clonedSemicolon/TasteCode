@@ -37,6 +37,8 @@ import androidx.navigation.NavHostController
 import com.example.tastecode.business.route.Screen
 import com.example.tastecode.components.MyTextField
 import com.example.tastecode.components.PasswordTextField
+import com.example.tastecode.data.User
+import com.example.tastecode.ui.components.button.RegisterButton
 import fakeNavController
 
 
@@ -44,6 +46,10 @@ import fakeNavController
 fun RegistrationScreen(navHostController: NavHostController) {
 
     var termsAccepted by remember { mutableStateOf(false) }
+    var firstName = remember { mutableStateOf("") }
+    var lastName = remember { mutableStateOf("") }
+    var password = remember { mutableStateOf("") }
+    var email = remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -78,26 +84,31 @@ fun RegistrationScreen(navHostController: NavHostController) {
         Spacer(modifier = Modifier.height(24.dp))
 
         MyTextField(
+            textValue = firstName,
             labelValue = stringResource(id = R.string.first_name),
             painterResource = painterResource(id = R.drawable.img)
         )
 
         MyTextField(
+            textValue = lastName,
             labelValue = stringResource(id = R.string.last_name),
             painterResource = painterResource(id = R.drawable.img)
         )
 
         MyTextField(
+            textValue = email,
             labelValue = stringResource(id = R.string.email),
             painterResource = painterResource(id = R.drawable.img)
         )
 
         PasswordTextField(
+            textValue = password,
             labelValue = stringResource(id = R.string.pass_word),
         )
 
         PasswordTextField(
-            labelValue = stringResource(id = R.string.confirm_password),
+            textValue = password,
+            labelValue = stringResource(id = R.string.confirm_password)
         )
 
         Row(
@@ -125,8 +136,9 @@ fun RegistrationScreen(navHostController: NavHostController) {
                     })
         }
 
-
-        UserActionButton(text = stringResource(id = R.string.register))
+        var user: User = User(firstName.value, lastName.value, email.value, password.value)
+        var id:String = java.util.UUID.randomUUID().toString()
+        RegisterButton(id ,user, text = stringResource(id = R.string.register))
         Spacer(modifier = Modifier.height(20.dp))
         Spacer(modifier = Modifier.height(20.dp))
 
