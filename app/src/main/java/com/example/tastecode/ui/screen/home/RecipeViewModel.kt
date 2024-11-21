@@ -2,7 +2,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class RecipeViewModel(private val repository: RecipeRepository) : ViewModel() {
+class RecipeViewModel(
+    private val repository: RecipeRepository) : ViewModel() {
     val recipes: LiveData<List<Recipe>> = repository.getRecipes()
 }
 

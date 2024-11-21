@@ -17,23 +17,14 @@ import coil3.compose.AsyncImage
 
 
 @Composable
-fun RecipeItem(recipe: Recipe) {
-//    Column {
-//        Text(text = recipe.name ?: "No Name")
-//        Text(text = recipe.description ?: "No Instructions")
-//        // Add more UI elements as needed
-//    }
+fun RecipeItem(recipe: Recipe,onClick:()->Unit) {
 
 
     Surface(shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .padding(12.dp)
             .clickable(onClick = {
-//                navController
-//                    ?.navigate("${NavRoutes.SingleRecipe.name}/${recipe.recipeId!!}"){
-//                        popUpTo(navController.graph.findStartDestination().id)
-//                        launchSingleTop = true
-//                    }
+                onClick()
             })
 
     ) {

@@ -5,5 +5,5 @@ import androidx.navigation.NavHostController
 fun HomeScreen(
     navController: NavHostController
 ) {
-    RecipeList()
+    RecipeList(navHostController = navController)
 }

@@ -1,5 +1,7 @@
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.tastecode.business.route.Screen
@@ -25,5 +27,9 @@ fun AppNavHost(navController: NavHostController) {
         composable(Screen.HomeScreen.route) {
             HomeScreen(navController)
         }
+        composable(Screen.RecipeDetailsScreen.route) {
+            RecipeDetailsScreen()
+        }
+
     }
 }
