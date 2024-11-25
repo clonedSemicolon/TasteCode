@@ -12,6 +12,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,10 +29,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import com.example.tastecode.R
 import com.example.tastecode.business.route.Screen
+import com.example.tastecode.ui.components.button.LoginButton
 import com.example.tastecode.ui.theme.Poppins
 
 @Composable
 fun LoginScreen(navHostController: NavHostController) {
+
+    var password = remember { mutableStateOf("") }
+    var email = remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -77,8 +83,8 @@ fun LoginScreen(navHostController: NavHostController) {
         )
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = email.value,
+            onValueChange = { email.value = it },
             label = {
                 Text("Enter Email",
                     color = Color(0xffD9D9D9),
@@ -103,8 +109,8 @@ fun LoginScreen(navHostController: NavHostController) {
         )
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = password.value,
+            onValueChange = { password.value = it },
             label = { Text("Enter Password", color = Color(0xffD9D9D9)) },
             modifier = Modifier
                 .fillMaxWidth()
@@ -131,11 +137,7 @@ fun LoginScreen(navHostController: NavHostController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        UserActionButton(text = stringResource(id = R.string.login), onClick = {
-            navHostController.navigate(Screen.HomeScreen.route) {
-
-            }
-        })
+        LoginButton(username = email.value, password = password.value, text = stringResource(id = R.string.login))
 
         Spacer(modifier = Modifier.height(24.dp))
 

@@ -68,6 +68,8 @@ dependencies {
     //Guna end
     implementation(libs.firebase.database.ktx)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.analytics)
+    implementation(libs.androidx.datastore.preferences.core.jvm)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -84,4 +86,9 @@ dependencies {
     implementation (libs.androidx.runtime.livedata)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+    implementation(platform(libs.firebase.bom.v3360))
+    implementation(libs.firebase.database)
+    implementation(libs.java.jwt)
+    implementation(libs.jbcrypt)
+    implementation(libs.androidx.datastore.preferences)
 }
