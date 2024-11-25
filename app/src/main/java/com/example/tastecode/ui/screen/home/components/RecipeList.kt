@@ -23,7 +23,7 @@ fun RecipeList(
                         title = recipe.name,
                         imageUrl = recipe.image,
                         author = recipe.author,
-                        cookingTime = recipe.times?.get("Cooking_time"),
+                        cookingTime = recipe.times?.get("Cooking"),
                         ingridients = recipe.ingredients,
                         steps = recipe.steps,
                         serving = recipe.serves.toString()

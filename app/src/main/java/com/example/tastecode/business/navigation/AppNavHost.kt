@@ -28,7 +28,7 @@ fun AppNavHost(navController: NavHostController) {
             HomeScreen(navController)
         }
         composable(Screen.RecipeDetailsScreen.route) {
-            RecipeDetailsScreen()
+            RecipeDetailsScreen(navController)
         }
 
     }
