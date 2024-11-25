@@ -1,5 +1,6 @@
 package com.example.tastecode.ui.components.button
 
+
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,12 +26,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tastecode.data.Database
-import com.example.tastecode.data.User
+
 
 @Composable
-fun RegisterButton(
-    id: String? = null,
-    user: User? = null,
+fun LoginButton(
+    username: String,
+    password: String,
     text: String
 ) {
     val context = LocalContext.current
@@ -40,24 +41,19 @@ fun RegisterButton(
 
     Button(
         onClick = {
-            val db = Database()
-
-            user?.let {
-                db.addUser(
-                    userId = id ?: "",
-                    firstName = it.firstName ?: "",
-                    lastName = it.lastName ?: "",
-                    email = it.email ?: "",
-                    password = it.password ?: "",
-                    onSuccess = {
-                        showSuccessDialog = true
-                    },
-                    onFailure = { error ->
-                        showFailureDialog = true
-                        failureMessage = error
-                    }
-                )
-            }
+            val database = Database()
+            database.loginUser(
+                username = username,
+                password = password,
+                context = context,
+                onSuccess = {
+                    showSuccessDialog = true
+                },
+                onFailure = { error ->
+                    showFailureDialog = true
+                    failureMessage = error
+                }
+            )
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -74,8 +70,8 @@ fun RegisterButton(
                         Text("OK")
                     }
                 },
-                title = { Text("Registration Successful") },
-                text = { Text("Your registration was completed successfully!") }
+                title = { Text("Login Successful") },
+                text = { Text("You have logged in successfully!") }
             )
         }
 
@@ -87,7 +83,7 @@ fun RegisterButton(
                         Text("OK")
                     }
                 },
-                title = { Text("Registration Failed") },
+                title = { Text("Login Failed") },
                 text = { Text(failureMessage) }
             )
         }
@@ -102,3 +98,5 @@ fun RegisterButton(
         Icon(Icons.Filled.ArrowForward, contentDescription = null, tint = Color.White)
     }
 }
+
+
