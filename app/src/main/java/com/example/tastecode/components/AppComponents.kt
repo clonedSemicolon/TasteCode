@@ -42,6 +42,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color.Companion.Black
@@ -87,17 +88,15 @@ fun HeadingTextComponent(value: String) {
 }
 
 @Composable
-fun MyTextField(labelValue: String, painterResource: Painter){
-    val textValue = remember{
-        mutableStateOf("")
-    }
-
+fun MyTextField(
+    labelValue: String,
+    painterResource: Painter,
+    textValue: MutableState<String> = remember { mutableStateOf("") }
+) {
     OutlinedTextField(
-        value = "",
-        onValueChange = {
-            textValue.value = it
-        },
-        label = { Text(text = labelValue)},
+        value = textValue.value,
+        onValueChange = { textValue.value = it },
+        label = { Text(text = labelValue) },
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
@@ -106,14 +105,19 @@ fun MyTextField(labelValue: String, painterResource: Painter){
     )
 }
 
+
 @Composable
-fun PasswordTextField(labelValue: String) {
-    var textValue by remember { mutableStateOf("") }
+fun PasswordTextField(
+    labelValue: String,
+    textValue: MutableState<String>
+) {
+
+    val internalState = textValue ?: remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
     OutlinedTextField(
-        value = textValue,
-        onValueChange = { textValue = it },
+        value = internalState.value,
+        onValueChange = { internalState.value = it },
         label = { Text(text = labelValue) },
         modifier = Modifier
             .fillMaxWidth()
@@ -123,12 +127,16 @@ fun PasswordTextField(labelValue: String) {
         trailingIcon = {
             val image = if (passwordVisible) Icons.Filled.Visibility else Icons.Filled.VisibilityOff
             IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                Icon(imageVector = image, contentDescription = if (passwordVisible) "Hide password" else "Show password")
+                Icon(
+                    imageVector = image,
+                    contentDescription = if (passwordVisible) "Hide password" else "Show password"
+                )
             }
         },
         keyboardOptions = KeyboardOptions.Default,
     )
 }
+
 
 @Composable
 fun CheckboxComponent(value: String){

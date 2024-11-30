@@ -36,3 +36,4 @@ val Typography = Typography(
 )
 
 val Poppins = FontFamily(Font(R.font.poppins_thin))
+val Poppins_Black = FontFamily(Font(R.font.poppins_black))
