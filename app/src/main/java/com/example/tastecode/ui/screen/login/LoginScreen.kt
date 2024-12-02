@@ -137,7 +137,7 @@ fun LoginScreen(navHostController: NavHostController) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        LoginButton(username = email.value, password = password.value, text = stringResource(id = R.string.login))
+        LoginButton(username = email.value, password = password.value, text = stringResource(id = R.string.login), navHostController)
 
         Spacer(modifier = Modifier.height(24.dp))
 
