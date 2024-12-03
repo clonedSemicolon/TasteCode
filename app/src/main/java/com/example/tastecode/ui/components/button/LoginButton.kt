@@ -25,6 +25,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.tastecode.business.route.Screen
 import com.example.tastecode.data.Database
 
 
@@ -32,7 +34,8 @@ import com.example.tastecode.data.Database
 fun LoginButton(
     username: String,
     password: String,
-    text: String
+    text: String,
+    navHostController: NavHostController
 ) {
     val context = LocalContext.current
     var showSuccessDialog by remember { mutableStateOf(false) }
@@ -63,17 +66,8 @@ fun LoginButton(
     ) {
 
         if (showSuccessDialog) {
-            AlertDialog(
-                onDismissRequest = { showSuccessDialog = false },
-                confirmButton = {
-                    TextButton(onClick = { showSuccessDialog = false }) {
-                        Text("OK")
-                    }
-                },
-                title = { Text("Login Successful") },
-                text = { Text("You have logged in successfully!") }
-            )
-        }
+            navHostController.navigate(Screen.HomeScreen.route)
+}
 
         if (showFailureDialog) {
             AlertDialog(
