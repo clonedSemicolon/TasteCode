@@ -136,7 +136,11 @@ fun RegistrationScreen(navHostController: NavHostController) {
                     })
         }
 
-        var user: User = User(firstName.value, lastName.value, email.value, password.value)
+        var user: User = User(
+            firstName = firstName.value,
+            lastName = lastName.value,
+            email = email.value,
+            password = password.value)
         var id:String = java.util.UUID.randomUUID().toString()
         RegisterButton(id ,user, text = stringResource(id = R.string.register))
         Spacer(modifier = Modifier.height(20.dp))
