@@ -28,6 +28,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,10 +40,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.tastecode.business.route.Screen
 import com.example.tastecode.business.utilities.BusinessUtils
 import com.example.tastecode.business.utilities.BusinessUtils.executeInBackground
+import com.example.tastecode.ui.screen.loading.LoadingScreen
 import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -51,88 +57,95 @@ fun HomeScreen(
 
     // Coroutine scope to launch drawer state changes
     val scope = rememberCoroutineScope()
+    val recipeViewModel:RecipeViewModel = viewModel(factory = RecipeViewModelFactory(RecipeRepository()))
+    val recipes by recipeViewModel.recipes.observeAsState(emptyList())
 
-    ModalNavigationDrawer(
-        drawerState = drawerState,
-        drawerContent = {
-            // Drawer content
-            ModalDrawerSheet(
-                drawerContentColor = Color(0xFF129575),
-                modifier = Modifier
-                    .fillMaxWidth(0.7f),
-            ) {
-                // Here you can define the items in the side drawer
-                NavigationDrawerItem(
-                    icon = {
-                        Icon(Icons.Filled.Logout, contentDescription = "Menu", tint = Color(0xFF129575)) },
-                    label = { Text("Logout", color = Color(0xFF129575), fontWeight = FontWeight(600)) },
-                    onClick = {
-                       scope.launch {
-                           navController.navigate(Screen.LoginScreen.route)
-                           SharedData.userData = null
-                       }
-                    },
-                    selected = false
-                )
-                // Add more drawer items as needed
+    if(recipes.isNotEmpty()){
+        ModalNavigationDrawer(
+            drawerState = drawerState,
+            drawerContent = {
+                // Drawer content
+                ModalDrawerSheet(
+                    drawerContentColor = Color(0xFF129575),
+                    modifier = Modifier
+                        .fillMaxWidth(0.7f),
+                ) {
+                    // Here you can define the items in the side drawer
+                    NavigationDrawerItem(
+                        icon = {
+                            Icon(Icons.Filled.Logout, contentDescription = "Menu", tint = Color(0xFF129575)) },
+                        label = { Text("Logout", color = Color(0xFF129575), fontWeight = FontWeight(600)) },
+                        onClick = {
+                            scope.launch {
+                                navController.navigate(Screen.LoginScreen.route)
+                                SharedData.userData = null
+                            }
+                        },
+                        selected = false
+                    )
+                    // Add more drawer items as needed
+                }
             }
-        }
-    ) {
-        Column {
-            Spacer(modifier = Modifier.height(32.dp))
+        ) {
+            Column {
+                Spacer(modifier = Modifier.height(32.dp))
 
-            // Header with menu icon to open the drawer
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // Menu button to toggle drawer
-                IconButton(
-                    modifier = Modifier.padding(vertical = 12.dp),
-                    onClick = {
-                        // Toggle the drawer state
-                        scope.launch {
-                            if (drawerState.isOpen) {
-                                drawerState.close()
-                            } else {
-                                drawerState.open()
+                // Header with menu icon to open the drawer
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // Menu button to toggle drawer
+                    IconButton(
+                        modifier = Modifier.padding(vertical = 12.dp),
+                        onClick = {
+                            // Toggle the drawer state
+                            scope.launch {
+                                if (drawerState.isOpen) {
+                                    drawerState.close()
+                                } else {
+                                    drawerState.open()
+                                }
                             }
                         }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = "Sidebar",
+                            tint = Color(0xFF129575)
+                        )
                     }
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Menu,
-                        contentDescription = "Sidebar",
-                        tint = Color(0xFF129575)
+
+                    // Another button (e.g., Profile)
+                    IconButton(
+                        modifier = Modifier.padding(vertical = 12.dp),
+                        onClick = {  }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = "Share",
+                            tint = Color(0xFF129575)
+                        )
+                    }
+                }
+
+                Column(modifier = Modifier.padding(horizontal = 12.dp)) {
+                    Text(
+                        text = "Hello, ${SharedData.userData?.firstName}",
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            color = Color.Black,
+                        )
                     )
                 }
 
-                // Another button (e.g., Profile)
-                IconButton(
-                    modifier = Modifier.padding(vertical = 12.dp),
-                    onClick = {  }
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Person,
-                        contentDescription = "Share",
-                        tint = Color(0xFF129575)
-                    )
-                }
+                RecipeList(navHostController = navController, viewModel = recipeViewModel)
             }
-
-            Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-                Text(
-                    text = "Hello, ${SharedData.userData?.firstName}",
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        color = Color.Black,
-                    )
-                )
-            }
-
-            RecipeList(navHostController = navController)
         }
+    }else{
+        LoadingScreen()
     }
+
 }
