@@ -12,7 +12,7 @@ import com.example.tastecode.data.User
 @Dao
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-     suspend fun insertUser(user: com.example.tastecode.data.User)
+     suspend fun insertUser(user: User)
 
     @Query("SELECT * FROM users WHERE userId = :userId")
      suspend fun getUserById(userId: String): User?
