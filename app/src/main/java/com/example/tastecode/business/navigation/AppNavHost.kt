@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.tastecode.business.route.Screen
 import com.example.tastecode.ui.screen.fogotpassword.ForgotPasswordScreen
+import com.example.tastecode.ui.screen.loading.LoadingScreen
 import com.example.tastecode.ui.screen.registration.RegistrationScreen
 import com.example.tastecode.ui.screen.splash.SplashScreen
 
@@ -29,6 +30,9 @@ fun AppNavHost(navController: NavHostController) {
         }
         composable(Screen.RecipeDetailsScreen.route) {
             RecipeDetailsScreen(navController)
+        }
+        composable(Screen.FetchingDataScreen.route) {
+            LoadingScreen()
         }
 
     }

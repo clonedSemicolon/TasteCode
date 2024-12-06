@@ -16,9 +16,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,7 +30,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.tastecode.business.route.Screen
+import com.example.tastecode.business.utilities.BusinessUtils
+import com.example.tastecode.business.utilities.BusinessUtils.executeInBackground
 import com.example.tastecode.data.Database
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -42,6 +47,7 @@ fun LoginButton(
     var showSuccessDialog by remember { mutableStateOf(false) }
     var showFailureDialog by remember { mutableStateOf(false) }
     var failureMessage by remember { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
 
     Button(
         onClick = {
