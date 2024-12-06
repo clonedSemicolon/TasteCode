@@ -1,5 +1,6 @@
 package com.example.tastecode.ui.screen.splash
 
+import SharedData
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,16 +25,41 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.tastecode.R
 import com.example.tastecode.business.route.Screen
+import com.example.tastecode.business.utilities.BusinessUtils.executeInBackground
+import com.example.tastecode.data.db.AppDatabase
+import com.example.tastecode.security.JwtService
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(navHostController: NavHostController) {
 
+
+    val context = LocalContext.current
+    val jwtService = JwtService(context,"1A6Y36H6L2", "tastecode")
+    val db = AppDatabase.getDatabase(context)
+
+
+
     LaunchedEffect(Unit) {
         delay(2000) // 2 seconds delay
-        navHostController.navigate(Screen.LoginScreen.route) {
-            popUpTo(Screen.SplashScreen.route) { inclusive = true }
-        }
+        this.executeInBackground({
+            val userToken = jwtService.getToken()
+            userToken?.let {
+                SharedData.userData = db.userDao().getUser()
+            }
+            return@executeInBackground userToken
+        },{
+            if(it == null){
+                navHostController.navigate(Screen.LoginScreen.route) {
+                    popUpTo(Screen.SplashScreen.route) { inclusive = true }
+                }
+            }else{
+                navHostController.navigate(Screen.HomeScreen.route) {
+                    popUpTo(Screen.SplashScreen.route) { inclusive = true }
+                }
+            }
+        })
+
     }
 
     Box(

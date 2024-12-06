@@ -1,6 +1,7 @@
 package com.example.tastecode.ui.components.button
 
 
+import SharedData
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -67,7 +68,7 @@ fun LoginButton(
 
         if (showSuccessDialog) {
             navHostController.navigate(Screen.HomeScreen.route)
-}
+        }
 
         if (showFailureDialog) {
             AlertDialog(

@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("com.google.gms.google-services")
+    id ("kotlin-kapt")
 
 }
 
@@ -45,7 +46,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.7"
     }
     packaging {
         exclude ("META-INF/DEPENDENCIES")
@@ -91,4 +92,13 @@ dependencies {
     implementation(libs.java.jwt)
     implementation(libs.jbcrypt)
     implementation(libs.androidx.datastore.preferences)
+
+    val room_version = "2.6.1"
+
+    implementation("androidx.room:room-runtime:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation ("androidx.room:room-ktx:$room_version")
+//    ksp("androidx.room:room-compiler:$room_version")
+
+
 }
