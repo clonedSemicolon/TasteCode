@@ -53,7 +53,7 @@ android {
 }
 
 dependencies {
-
+    implementation("io.coil-kt:coil-compose:2.4.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -78,12 +78,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(platform(libs.firebase.bom))
-    implementation (libs.androidx.navigation.compose)
-    implementation (libs.androidx.hilt.navigation.compose)
-    implementation (libs.androidx.multidex)
-    implementation (libs.firebase.firestore.ktx)
-    implementation (libs.androidx.lifecycle.viewmodel.compose)
-    implementation (libs.androidx.runtime.livedata)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.multidex)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.runtime.livedata)
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
     implementation(platform(libs.firebase.bom.v3360))
