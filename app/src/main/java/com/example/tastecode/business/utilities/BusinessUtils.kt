@@ -19,3 +19,9 @@ object BusinessUtils {
         }
     }
 }
+
+
+object Constants{
+
+
+}
