@@ -65,9 +65,8 @@ fun RecipeDetailsScreen(navController: NavController) {
     val onBackPressedDispatcher =
         LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher// 0 for Ingredients, 1 for Procedure
 
-    //Infinite transition to animate the flashy text color
-    //Guna
-// Infinite transition to animate the flashy text color
+
+// Guna - Infinite transition to animate the flashy text color
     val infiniteTransition = rememberInfiniteTransition()
     val animatedColor by infiniteTransition.animateColor(
         initialValue = Color.Red,
