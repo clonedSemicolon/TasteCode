@@ -20,13 +20,235 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tastecode.R
 
+// Greenish Color Scheme
+private val LightGreenColorScheme = lightColorScheme(
+    primary = Color(0xFF4CAF50), // Green primary color
+    onPrimary = Color.White,
+    background = Color(0xFFF0FDF4), // Light green background
+    onBackground = Color(0xFF1B5E20), // Dark green for text/icons
+    surface = Color.White,
+    onSurface = Color(0xFF1B5E20)
+)
+
+private val DarkGreenColorScheme = darkColorScheme(
+    primary = Color(0xFF2E7D32), // Darker green primary
+    onPrimary = Color.White,
+    background = Color(0xFF1B5E20), // Dark green background
+    onBackground = Color.White,
+    surface = Color(0xFF2E7D32),
+    onSurface = Color.White
+)
+@Composable
+fun EditableShippingAddress() {
+    var address by remember { mutableStateOf("123 Main Street, Springfield, IL 62704") }
+    var isEditing by remember { mutableStateOf(false) }
+
+    Column {
+        if (isEditing) {
+            // Editable TextField
+            TextField(
+                value = address,
+                onValueChange = { address = it },
+                label = { Text("Edit Address") },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface
+                )
+
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+            Button(
+                onClick = { isEditing = false }, // Save the updated address
+                modifier = Modifier.align(Alignment.End)
+            ) {
+                Text("Save")
+            }
+        } else {
+            // Display Saved Address
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = address,
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.weight(1f)
+                )
+                Button(
+                    onClick = { isEditing = true } // Enable editing mode
+                ) {
+                    Text("Edit")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ChangePassword() {
+    var oldPassword by remember { mutableStateOf("") }
+    var newPassword by remember { mutableStateOf("") }
+
+    Column {
+        // Old Password Input
+        TextField(
+            value = oldPassword,
+            onValueChange = { oldPassword = it },
+            label = { Text("Old Password") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface
+            )
+
+        )
+
+        // New Password Input
+        TextField(
+            value = newPassword,
+            onValueChange = { newPassword = it },
+            label = { Text("New Password") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface
+            )
+
+        )
+
+        // Save Button
+        Button(
+            onClick = { /* Handle password change logic */ },
+            modifier = Modifier.align(Alignment.End)
+        ) {
+            Text("Save")
+        }
+    }
+}
+@Composable
+fun HeaderSection() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 16.dp),
+    ) {
+        // Back Button
+        IconButton(
+            onClick = { /* Handle back navigation */ },
+            modifier = Modifier.align(Alignment.CenterStart)
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.backarrow), // Replace with your back arrow icon
+                contentDescription = "Back",
+                tint = Color.Unspecified
+
+            )
+        }
+
+        // Title
+        Text(
+            text = "Profile",
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.align(Alignment.Center) // Center the text
+        )
+    }
+
+    // Profile Picture Section
+    Box(
+        modifier = Modifier
+            .size(100.dp)
+            .background(MaterialTheme.colorScheme.surface, CircleShape),
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            painter = painterResource(R.drawable.ic_profilepicture), // Replace with your profile picture
+            contentDescription = "Profile Picture",
+            modifier = Modifier
+                .size(80.dp)
+                .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f), CircleShape)
+                .padding(2.dp),
+            contentScale = ContentScale.Crop
+        )
+    }
+    Spacer(modifier = Modifier.height(8.dp))
+    Text(
+        text = "John Doe", // Replace with user's full name
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.onBackground
+    )
+    Spacer(modifier = Modifier.height(4.dp))
+    Text(
+        text = "johndoe@gmail.com", // Replace with user's email
+        fontSize = 14.sp,
+        color = MaterialTheme.colorScheme.onBackground
+    )
+}
+@Composable
+fun ProfileOptionItem(
+    title: String,
+    icon: Int,
+    showDivider: Boolean
+) {
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+                .clickable { /* Add action here, e.g., navigate or log out */ },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(icon), // Ensure the icon resource exists
+                contentDescription = title,
+                modifier = Modifier.size(24.dp),
+                tint = Color.Unspecified
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = title,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.weight(1f)
+            )
+        }
+        if (showDivider) {
+            Divider(
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                thickness = 1.dp
+            )
+        }
+    }
+}
+
+
 @Composable
 fun ProfileScreen() {
     var isDarkTheme by remember { mutableStateOf(false) }
 
-    // Apply Theme Based on Toggle
+    // Apply Greenish Theme Based on Toggle
     MaterialTheme(
-        colorScheme = if (isDarkTheme) darkColorScheme() else lightColorScheme()
+        colorScheme = if (isDarkTheme) DarkGreenColorScheme else LightGreenColorScheme
     ) {
         Surface(modifier = Modifier.fillMaxSize()) {
             Column(
@@ -50,6 +272,7 @@ fun ProfileScreen() {
                     // Order History Section
                     ExpandableSection(
                         title = "Order History",
+                        icon = R.drawable.orderhistory, // Replace with your icon
                         content = {
                             Column {
                                 Text("- Order #1: Paneer Tikka - Delivered", fontSize = 14.sp)
@@ -63,18 +286,21 @@ fun ProfileScreen() {
                     // Shipping Address Section
                     ExpandableSection(
                         title = "Shipping Address",
+                        icon = R.drawable.ic_shipping, // Replace with your icon
                         content = { EditableShippingAddress() }
                     )
 
                     // Change Password Section
                     ExpandableSection(
                         title = "Change Password",
+                        icon = R.drawable.changepass, // Replace with your icon
                         content = { ChangePassword() }
                     )
 
                     // Favorite Recipes Section
                     ExpandableSection(
                         title = "Favorite Recipes",
+                        icon = R.drawable.favouriterecipes, // Replace with your icon
                         content = {
                             Column {
                                 Text("- Butter Chicken", fontSize = 14.sp)
@@ -88,6 +314,7 @@ fun ProfileScreen() {
                     // Create Request Section
                     ExpandableSection(
                         title = "Create Request",
+                        icon = R.drawable.createrequest, // Replace with your icon
                         content = {
                             Text("You can create a new service request here.", fontSize = 14.sp)
                         }
@@ -96,6 +323,7 @@ fun ProfileScreen() {
                     // Privacy Policy Section
                     ExpandableSection(
                         title = "Privacy Policy",
+                        icon = R.drawable.logout, // Replace with your icon
                         content = {
                             Text("Read our terms and privacy policies.", fontSize = 14.sp)
                         }
@@ -104,6 +332,7 @@ fun ProfileScreen() {
                     // Settings Section
                     ExpandableSection(
                         title = "Settings",
+                        icon = R.drawable.ic_setting, // Replace with your icon
                         content = {
                             Row(
                                 modifier = Modifier
@@ -128,7 +357,7 @@ fun ProfileScreen() {
                     // Log Out Section
                     ProfileOptionItem(
                         title = "Log out",
-                        icon = R.drawable.logout,
+                        icon = R.drawable.logout, // Replace with your icon
                         showDivider = false
                     )
                 }
@@ -138,169 +367,7 @@ fun ProfileScreen() {
 }
 
 @Composable
-fun HeaderSection() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 16.dp),
-    ) {
-        IconButton(
-            onClick = { /* Handle back navigation */ },
-            modifier = Modifier.align(Alignment.CenterStart)
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.backarrow),
-                contentDescription = "Back",
-                tint = Color.Unspecified
-            )
-        }
-
-        Text(
-            text = "Profile",
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp,
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.align(Alignment.Center)
-        )
-    }
-
-    // Profile Picture Section
-    Box(
-        modifier = Modifier
-            .size(100.dp)
-            .background(MaterialTheme.colorScheme.surface, CircleShape),
-        contentAlignment = Alignment.Center
-    ) {
-        Image(
-            painter = painterResource(R.drawable.ic_profilepicture),
-            contentDescription = "Profile Picture",
-            modifier = Modifier
-                .size(80.dp)
-                .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f), CircleShape)
-                .padding(2.dp),
-            contentScale = ContentScale.Crop
-        )
-    }
-    Spacer(modifier = Modifier.height(8.dp))
-    Text(
-        text = "John Doe", // User First and Last Name
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.onBackground
-    )
-    Spacer(modifier = Modifier.height(4.dp))
-    Text(
-        text = "johndoe@gmail.com", // User Email
-        fontSize = 14.sp,
-        color = MaterialTheme.colorScheme.onBackground
-    )
-}
-
-@Composable
-fun EditableShippingAddress() {
-    var address by remember { mutableStateOf("123 Main Street, Springfield, IL 62704") }
-    var isEditing by remember { mutableStateOf(false) }
-
-    Column {
-        if (isEditing) {
-            TextField(
-                value = address,
-                onValueChange = { address = it },
-                label = { Text("Edit Address") },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp))
-                    .padding(8.dp),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface
-                )
-
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(
-                onClick = { isEditing = false },
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                Text("Save")
-            }
-        } else {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = address,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.weight(1f)
-                )
-                Button(
-                    onClick = { isEditing = true }
-                ) {
-                    Text("Edit")
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ChangePassword() {
-    var oldPassword by remember { mutableStateOf("") }
-    var newPassword by remember { mutableStateOf("") }
-
-    Column {
-        TextField(
-            value = oldPassword,
-            onValueChange = { oldPassword = it },
-            label = { Text("Old Password") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface
-            )
-
-        )
-
-
-        TextField(
-            value = newPassword,
-            onValueChange = { newPassword = it },
-            label = { Text("New Password") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface
-            )
-
-        )
-
-
-        Button(
-            onClick = { /* Handle password change */ },
-            modifier = Modifier.align(Alignment.End)
-        ) {
-            Text("Save")
-        }
-    }
-}
-
-@Composable
-fun ExpandableSection(title: String, content: @Composable () -> Unit) {
+fun ExpandableSection(title: String, icon: Int, content: @Composable () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
 
     Column(
@@ -316,10 +383,10 @@ fun ExpandableSection(title: String, content: @Composable () -> Unit) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_setting),
+                painter = painterResource(icon), // Use dynamic icon
                 contentDescription = title,
                 modifier = Modifier.size(24.dp),
-                tint = MaterialTheme.colorScheme.onBackground
+                tint = Color.Unspecified
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
@@ -330,7 +397,7 @@ fun ExpandableSection(title: String, content: @Composable () -> Unit) {
                 modifier = Modifier.weight(1f)
             )
             Icon(
-                painter = painterResource(if (expanded) R.drawable.uparrow else R.drawable.downarrow),
+                painter = painterResource(if (expanded) R.drawable.uparrow2 else R.drawable.downarrow),
                 contentDescription = if (expanded) "Collapse" else "Expand",
                 modifier = Modifier.size(20.dp),
                 tint = Color.Unspecified
@@ -339,36 +406,6 @@ fun ExpandableSection(title: String, content: @Composable () -> Unit) {
         if (expanded) {
             Spacer(modifier = Modifier.height(8.dp))
             content()
-        }
-    }
-}
-
-@Composable
-fun ProfileOptionItem(title: String, icon: Int, showDivider: Boolean) {
-    Column {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                painter = painterResource(icon),
-                contentDescription = title,
-                modifier = Modifier.size(24.dp),
-                tint = Color.Unspecified
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = title,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.weight(1f)
-            )
-        }
-        if (showDivider) {
-            Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f), thickness = 1.dp)
         }
     }
 }
