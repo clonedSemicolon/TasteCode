@@ -9,9 +9,11 @@ import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -32,6 +34,7 @@ import com.example.tastecode.business.route.Screen
 import com.example.tastecode.ui.components.button.LoginButton
 import com.example.tastecode.ui.theme.Poppins
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navHostController: NavHostController) {
 
@@ -85,14 +88,15 @@ fun LoginScreen(navHostController: NavHostController) {
         OutlinedTextField(
             value = email.value,
             onValueChange = { email.value = it },
-            label = {
-                Text("Enter Email",
-                    color = Color(0xffD9D9D9),
-                    ) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 4.dp),
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(8.dp),
+            maxLines = 1,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Color(0xFF129575),
+                focusedBorderColor = Color(0xFF129575)
+            )
         )
 
         Spacer(modifier = Modifier.height(18.dp))
@@ -111,11 +115,15 @@ fun LoginScreen(navHostController: NavHostController) {
         OutlinedTextField(
             value = password.value,
             onValueChange = { password.value = it },
-            label = { Text("Enter Password", color = Color(0xffD9D9D9)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 4.dp),
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(8.dp),
+            maxLines = 1,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                unfocusedBorderColor = Color(0xFF129575),
+                focusedBorderColor = Color(0xFF129575)
+            )
         )
 
         Text(
@@ -127,17 +135,18 @@ fun LoginScreen(navHostController: NavHostController) {
                 .padding(vertical = 8.dp)
                 .clickable {
                     /* Handle forgot password */
-                    navHostController.navigate(Screen.ForgotPasswordScreen.route) {
-                        popUpTo(Screen.LoginScreen.route) {
-                            inclusive = true
-                        }
-                    }
+                    navHostController.navigate(Screen.ForgotPasswordScreen.route)
+
                 }
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        LoginButton(username = email.value, password = password.value, text = stringResource(id = R.string.login), navHostController)
+        LoginButton(
+            username = email.value,
+            password = password.value,
+            text = stringResource(id = R.string.login),
+            navHostController)
 
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -148,11 +157,7 @@ fun LoginScreen(navHostController: NavHostController) {
             text = "Don’t have an account? Sign up",
             color = Color(0xFFFFA726), // orange color
             modifier = Modifier.clickable { /* Handle sign-up */
-                navHostController.navigate(Screen.UserRegistrationScreen.route) {
-                    popUpTo(Screen.UserRegistrationScreen.route) {
-                        inclusive = true
-                    }
-                }
+                navHostController.navigate(Screen.UserRegistrationScreen.route)
             },
             textAlign = TextAlign.Center
         )

@@ -23,5 +23,6 @@ object BusinessUtils {
 
 object Constants{
 
-
+    const val SECRET_KEY = "1A6Y36H6L2"
+    const val JWT_ISSUER = "tastecode"
 }

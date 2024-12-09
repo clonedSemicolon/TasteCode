@@ -2,6 +2,7 @@ package com.example.tastecode.ui.components.button
 
 
 import SharedData
+import android.widget.Toast
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,7 +33,10 @@ import androidx.navigation.NavHostController
 import com.example.tastecode.business.route.Screen
 import com.example.tastecode.business.utilities.BusinessUtils
 import com.example.tastecode.business.utilities.BusinessUtils.executeInBackground
+import com.example.tastecode.business.utilities.Constants
 import com.example.tastecode.data.Database
+import com.example.tastecode.data.db.AppDatabase
+import com.example.tastecode.security.JwtService
 import kotlinx.coroutines.launch
 
 
@@ -47,9 +51,14 @@ fun LoginButton(
     var showSuccessDialog by remember { mutableStateOf(false) }
     var showFailureDialog by remember { mutableStateOf(false) }
     var failureMessage by remember { mutableStateOf("") }
+    val jwtService = JwtService(context, Constants.SECRET_KEY, Constants.JWT_ISSUER)
 
     Button(
         onClick = {
+            if (username.isEmpty() || password.isEmpty()) {
+                Toast.makeText(context, "Email or Password is Empty", Toast.LENGTH_LONG).show()
+                return@Button
+            }
             val database = Database()
             database.loginUser(
                 username = username,
@@ -63,6 +72,8 @@ fun LoginButton(
                     failureMessage = error
                 }
             )
+
+
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -72,7 +83,18 @@ fun LoginButton(
     ) {
 
         if (showSuccessDialog) {
-            navHostController.navigate(Screen.HomeScreen.route)
+            LaunchedEffect(Unit) {
+                this.executeInBackground({
+                    val db = AppDatabase.getDatabase(context)
+                    val userToken = jwtService.getToken()
+                    userToken?.let {
+                        SharedData.userData = db.userDao().getUser()
+                    }
+                    return@executeInBackground userToken
+                }, {
+                    navHostController.navigate(Screen.HomeScreen.route)
+                })
+            }
         }
 
         if (showFailureDialog) {

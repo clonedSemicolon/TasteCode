@@ -1,3 +1,4 @@
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,4 +36,12 @@ fun Indicator(){
         )
     }
 
+}
+
+
+
+@Composable
+fun CallSystemBackPress() {
+    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    backDispatcher?.onBackPressed()
 }
