@@ -1,6 +1,5 @@
 package com.example.tastecode.ui.screen.profile
 
-
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,11 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tastecode.R
 
-
 @Composable
 fun ProfileScreen() {
     var isDarkTheme by remember { mutableStateOf(false) }
-
 
     // Apply Theme Based on Toggle
     MaterialTheme(
@@ -39,73 +36,9 @@ fun ProfileScreen() {
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Top App Bar or Back Arrow
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                ) {
-                    IconButton(
-                        onClick = { /* Handle back navigation */ },
-                        modifier = Modifier.align(Alignment.CenterStart)
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.backarrow),
-                            contentDescription = "Back",
-                            tint = Color.Unspecified
-                        )
-                    }
-
-
-                    Text(
-                        text = "Profile",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
-                }
-
-
-                // Profile Picture Section
-                Box(
-                    modifier = Modifier
-                        .size(100.dp)
-                        .background(MaterialTheme.colorScheme.surface, CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.ic_profilepicture),
-                        contentDescription = "Profile Picture",
-                        modifier = Modifier
-                            .size(80.dp)
-                            .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f), CircleShape)
-                            .padding(2.dp),
-                        contentScale = ContentScale.Crop
-                    )
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Robi",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "8967452743",
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-                Text(
-                    text = "robi123@gmail.com",
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-
-
+                // Top App Bar and Profile Info
+                HeaderSection()
                 Spacer(modifier = Modifier.height(24.dp))
-
 
                 // Profile Options
                 Column(
@@ -120,22 +53,37 @@ fun ProfileScreen() {
                         content = {
                             Column {
                                 Text("- Order #1: Paneer Tikka - Delivered", fontSize = 14.sp)
-                                Text("- Order #2: Chicken masala - Shipped", fontSize = 14.sp)
+                                Text("- Order #2: Chicken Masala - Shipped", fontSize = 14.sp)
                                 Text("- Order #3: Turkey - Delivered", fontSize = 14.sp)
                                 Text("- Order #4: Pizza - In Transit", fontSize = 14.sp)
                             }
                         }
                     )
 
-
                     // Shipping Address Section
                     ExpandableSection(
                         title = "Shipping Address",
-                        content = {
-                            EditableShippingAddress()
-                        }
+                        content = { EditableShippingAddress() }
                     )
 
+                    // Change Password Section
+                    ExpandableSection(
+                        title = "Change Password",
+                        content = { ChangePassword() }
+                    )
+
+                    // Favorite Recipes Section
+                    ExpandableSection(
+                        title = "Favorite Recipes",
+                        content = {
+                            Column {
+                                Text("- Butter Chicken", fontSize = 14.sp)
+                                Text("- Veg Biryani", fontSize = 14.sp)
+                                Text("- Margherita Pizza", fontSize = 14.sp)
+                                Text("- Chocolate Cake", fontSize = 14.sp)
+                            }
+                        }
+                    )
 
                     // Create Request Section
                     ExpandableSection(
@@ -145,7 +93,6 @@ fun ProfileScreen() {
                         }
                     )
 
-
                     // Privacy Policy Section
                     ExpandableSection(
                         title = "Privacy Policy",
@@ -153,7 +100,6 @@ fun ProfileScreen() {
                             Text("Read our terms and privacy policies.", fontSize = 14.sp)
                         }
                     )
-
 
                     // Settings Section
                     ExpandableSection(
@@ -179,8 +125,7 @@ fun ProfileScreen() {
                         }
                     )
 
-
-                    // Log out Section
+                    // Log Out Section
                     ProfileOptionItem(
                         title = "Log out",
                         icon = R.drawable.logout,
@@ -192,16 +137,72 @@ fun ProfileScreen() {
     }
 }
 
+@Composable
+fun HeaderSection() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 16.dp),
+    ) {
+        IconButton(
+            onClick = { /* Handle back navigation */ },
+            modifier = Modifier.align(Alignment.CenterStart)
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.backarrow),
+                contentDescription = "Back",
+                tint = Color.Unspecified
+            )
+        }
+
+        Text(
+            text = "Profile",
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
+
+    // Profile Picture Section
+    Box(
+        modifier = Modifier
+            .size(100.dp)
+            .background(MaterialTheme.colorScheme.surface, CircleShape),
+        contentAlignment = Alignment.Center
+    ) {
+        Image(
+            painter = painterResource(R.drawable.ic_profilepicture),
+            contentDescription = "Profile Picture",
+            modifier = Modifier
+                .size(80.dp)
+                .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f), CircleShape)
+                .padding(2.dp),
+            contentScale = ContentScale.Crop
+        )
+    }
+    Spacer(modifier = Modifier.height(8.dp))
+    Text(
+        text = "John Doe", // User First and Last Name
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.onBackground
+    )
+    Spacer(modifier = Modifier.height(4.dp))
+    Text(
+        text = "johndoe@gmail.com", // User Email
+        fontSize = 14.sp,
+        color = MaterialTheme.colorScheme.onBackground
+    )
+}
 
 @Composable
 fun EditableShippingAddress() {
     var address by remember { mutableStateOf("123 Main Street, Springfield, IL 62704") }
     var isEditing by remember { mutableStateOf(false) }
 
-
     Column {
         if (isEditing) {
-            // Editable TextField
             TextField(
                 value = address,
                 onValueChange = { address = it },
@@ -210,19 +211,23 @@ fun EditableShippingAddress() {
                     .fillMaxWidth()
                     .background(Color(0xFFF5F5F5), RoundedCornerShape(8.dp))
                     .padding(8.dp),
-                textStyle = LocalTextStyle.current.copy(color = Color.Black) // Text color
-            )
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                    unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface
+                )
 
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
             Button(
-                onClick = { isEditing = false }, // Save and stop editing
+                onClick = { isEditing = false },
                 modifier = Modifier.align(Alignment.End)
             ) {
                 Text("Save")
             }
         } else {
-            // Display Saved Address
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -236,7 +241,7 @@ fun EditableShippingAddress() {
                     modifier = Modifier.weight(1f)
                 )
                 Button(
-                    onClick = { isEditing = true } // Enable editing mode
+                    onClick = { isEditing = true }
                 ) {
                     Text("Edit")
                 }
@@ -245,11 +250,58 @@ fun EditableShippingAddress() {
     }
 }
 
+@Composable
+fun ChangePassword() {
+    var oldPassword by remember { mutableStateOf("") }
+    var newPassword by remember { mutableStateOf("") }
+
+    Column {
+        TextField(
+            value = oldPassword,
+            onValueChange = { oldPassword = it },
+            label = { Text("Old Password") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface
+            )
+
+        )
+
+
+        TextField(
+            value = newPassword,
+            onValueChange = { newPassword = it },
+            label = { Text("New Password") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface
+            )
+
+        )
+
+
+        Button(
+            onClick = { /* Handle password change */ },
+            modifier = Modifier.align(Alignment.End)
+        ) {
+            Text("Save")
+        }
+    }
+}
 
 @Composable
 fun ExpandableSection(title: String, content: @Composable () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
-
 
     Column(
         modifier = Modifier
@@ -259,15 +311,15 @@ fun ExpandableSection(title: String, content: @Composable () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
-                .clickable { expanded = !expanded },
+                .clickable { expanded = !expanded }
+                .padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                painter = painterResource(R.drawable.orderhistory2), // Replace with your icon
+                painter = painterResource(R.drawable.ic_setting),
                 contentDescription = title,
                 modifier = Modifier.size(24.dp),
-                tint = Color.Unspecified
+                tint = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
@@ -278,10 +330,10 @@ fun ExpandableSection(title: String, content: @Composable () -> Unit) {
                 modifier = Modifier.weight(1f)
             )
             Icon(
-                painter = painterResource(if (expanded) R.drawable.downarrow else R.drawable.uparrow), // Expand/Collapse icons
+                painter = painterResource(if (expanded) R.drawable.uparrow else R.drawable.downarrow),
                 contentDescription = if (expanded) "Collapse" else "Expand",
                 modifier = Modifier.size(20.dp),
-                tint = Color.Unspecified // Set the color to transparent
+                tint = Color.Unspecified
             )
         }
         if (expanded) {
@@ -290,7 +342,6 @@ fun ExpandableSection(title: String, content: @Composable () -> Unit) {
         }
     }
 }
-
 
 @Composable
 fun ProfileOptionItem(title: String, icon: Int, showDivider: Boolean) {
@@ -304,7 +355,8 @@ fun ProfileOptionItem(title: String, icon: Int, showDivider: Boolean) {
             Icon(
                 painter = painterResource(icon),
                 contentDescription = title,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp),
+                tint = Color.Unspecified
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
@@ -320,7 +372,6 @@ fun ProfileOptionItem(title: String, icon: Int, showDivider: Boolean) {
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
