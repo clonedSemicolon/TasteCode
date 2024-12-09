@@ -231,14 +231,26 @@ fun RecipeDetailsScreen(navController: NavController) {
                 modifier = Modifier.fillMaxWidth()
             ) {
                 // Author Avatar
-                Box(
+                /*Box(
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape)
                         .background(Color.LightGray)
-                )
+                )*/
 
                 Spacer(modifier = Modifier.width(12.dp))
+
+                // Chef's Hat Icon
+                AsyncImage(
+                    model = R.drawable.img_2,
+                    contentDescription = "Chef's Hat",
+                    modifier = Modifier
+                        .width(48.dp)
+                        .height(36.dp)
+                        .padding(end = 8.dp)
+                )
+
+                // chef's Name
                 Text(
                     text = recipeData?.author ?: "",
                     style = MaterialTheme.typography.bodyLarge,
