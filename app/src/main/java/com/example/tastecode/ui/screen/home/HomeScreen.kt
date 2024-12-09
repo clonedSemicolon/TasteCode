@@ -1,10 +1,15 @@
 import com.example.tastecode.ui.screen.loading.LoadingScreen
 
 import android.annotation.SuppressLint
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -13,14 +18,17 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.tastecode.R
 import com.example.tastecode.business.route.Screen
+import com.example.tastecode.components.MyTextField
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,35 +41,32 @@ fun HomeScreen(
 
     // Coroutine scope to launch drawer state changes
     val scope = rememberCoroutineScope()
-    val recipeViewModel: RecipeViewModel = viewModel(factory = RecipeViewModelFactory(RecipeRepository()))
+    val recipeViewModel: RecipeViewModel =
+        viewModel(factory = RecipeViewModelFactory(RecipeRepository()))
     val recipes by recipeViewModel.recipes.observeAsState(emptyList())
 
 
     // State to manage search query and filters
     val searchQuery = remember { mutableStateOf("") }
-    val selectedCategory = remember { mutableStateOf<String?>(null) }
-    val selectedDifficulty = remember { mutableStateOf<String?>(null) }
 
-    var showFilterSheet = remember { mutableStateOf(false) }
+    var selectedCategory:String? = null
+    var selectedDifficulty:String? = null
+    var selectedTime:String? = null
+    var selectedRating:String? = null
+
 
     // Function to filter recipes based on search and filters
     val filteredRecipes = recipes.filter {
-        (searchQuery.value.isEmpty() || it.name?.contains(searchQuery.value, ignoreCase = true) == true) &&
-                (selectedCategory.value?.let { category -> it.dish_type == category } ?: true) &&
-                (selectedDifficulty.value?.let { difficulty -> it.difficult == difficulty } ?: true)
+        (searchQuery.value.isEmpty() || it.name?.contains(
+            searchQuery.value,
+            ignoreCase = true
+        ) == true) &&
+                (selectedCategory?.let { category -> it.dish_type == category } ?: true) &&
+                (selectedDifficulty?.let { difficulty -> it.difficult == difficulty } ?: true)
     }
 
-    val bottomSheetState = rememberModalBottomSheetState()
 
-
-    val openBottomSheet = {
-        scope.launch { bottomSheetState.show() }
-        showFilterSheet.value = true
-    }
-    val closeBottomSheet = {
-        scope.launch { bottomSheetState.hide() }
-        showFilterSheet.value = false
-    }
+    var showFilterScreen by remember { mutableStateOf(false) }
 
     if (filteredRecipes.isNotEmpty()) {
         ModalNavigationDrawer(
@@ -73,9 +78,19 @@ fun HomeScreen(
                 ) {
                     NavigationDrawerItem(
                         icon = {
-                            Icon(Icons.Filled.Logout, contentDescription = "Menu", tint = Color(0xFF129575))
+                            Icon(
+                                Icons.Filled.Logout,
+                                contentDescription = "Menu",
+                                tint = Color(0xFF129575)
+                            )
                         },
-                        label = { Text("Logout", color = Color(0xFF129575), fontWeight = FontWeight(600)) },
+                        label = {
+                            Text(
+                                "Logout",
+                                color = Color(0xFF129575),
+                                fontWeight = FontWeight(600)
+                            )
+                        },
                         onClick = {
                             scope.launch {
                                 navController.navigate(Screen.LoginScreen.route)
@@ -129,41 +144,67 @@ fun HomeScreen(
                 }
 
                 // Greeting Text
-                Text(
-                    text = "Hello, ${SharedData.userData?.firstName}",
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        color = Color.Black,
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp)
+                ){
+                    Text(
+                        text = "Hello, ${SharedData.userData?.firstName}",
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            color = Color.Black,
+                        )
                     )
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
+                }
 
                 // Search Bar
-                Row(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),  // Vertical padding to ensure better spacing
+                    verticalAlignment = Alignment.CenterVertically // Center align both items vertically
+                ) {
+
+
+
+
                     OutlinedTextField(
                         value = searchQuery.value,
-                        onValueChange = { searchQuery.value = it },
-                        label = { Text("Search Recipes") },
+                        onValueChange = {
+                            searchQuery.value = it
+                        },
+                        label = { Text(text = "Search Recipe") },
+                        singleLine = true,
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
-                            .background(Color.Transparent, shape = MaterialTheme.shapes.medium)
-                            .padding(horizontal = 16.dp),
-                        singleLine = true,
+                            .padding(horizontal = 8.dp),
+                        shape = RoundedCornerShape(8.dp),
+                        keyboardOptions = KeyboardOptions.Default,
                         colors = TextFieldDefaults.outlinedTextFieldColors(
                             unfocusedBorderColor = Color(0xFF129575),
                             focusedBorderColor = Color(0xFF129575)
-
                         )
                     )
 
+//                    OutlinedTextField(
+//                        value = searchQuery.value,
+//                        onValueChange = { searchQuery.value = it },
+//                        label = { Text("Search Recipes") },
+//                        modifier = Modifier
+//                            .fillMaxWidth(0.8f) // Fill 80% of the width for the text field
+//                            .height(42.dp) // Set a smaller height for the search box
+//                            .background(Color.Transparent, shape = MaterialTheme.shapes.medium)
+//                            .padding(horizontal = 16.dp),
+//                        singleLine = true,
+//                        colors = TextFieldDefaults.outlinedTextFieldColors(
+//                            unfocusedBorderColor = Color(0xFF129575),
+//                            focusedBorderColor = Color(0xFF129575)
+//                        )
+//                    )
+
                     IconButton(
-                        onClick = {
-                            showFilterSheet.value = true
-                            openBottomSheet()
-                        },
-                        modifier = Modifier.padding(start = 8.dp)
+                        onClick = { showFilterScreen = true },
+                        modifier = Modifier.padding(start = 8.dp) // Add padding between the button and text field
                     ) {
                         Icon(
                             imageVector = Icons.Filled.FilterList,
@@ -176,7 +217,6 @@ fun HomeScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-
                 // Recipe List
                 RecipeList(
                     navHostController = navController,
@@ -184,103 +224,42 @@ fun HomeScreen(
                     viewModel = recipeViewModel
                 )
             }
+        }
 
-                ModalBottomSheet(
-                    sheetState = bottomSheetState,
-                    content = {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(Color.White)
-                                .padding(16.dp)
-                                .animateContentSize()
-                        // Align the dialog at the bottom
-                        ) {
-                            // Close Button
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.End
-                            ) {
-                                IconButton(onClick = { openBottomSheet() }) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Close,
-                                        contentDescription = "Close",
-                                        tint = Color(0xFF129575)
-                                    )
-                                }
-                            }
+        AnimatedVisibility(
+            visible = showFilterScreen,
+            enter = slideInHorizontally(initialOffsetX = { it }) + fadeIn(),
+            exit = slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .fillMaxHeight()
+                    .background(Color.White)
+            ) {
 
-                            // Category Filter
-                            Text("Category", style = MaterialTheme.typography.titleMedium)
-                            DropdownMenu(
-                                expanded = selectedCategory.value != null,
-                                onDismissRequest = { selectedCategory.value = null },
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                DropdownMenuItem(onClick = {
-                                    selectedCategory.value = "Dessert"
-                                }, text = { Text("Dessert") })
-                                DropdownMenuItem(onClick = {
-                                    selectedCategory.value = "MainCourse"
-                                }, text = { Text("Main Course") })
-                            }
+                FilterColumn(onApplyFilter = {category,difficulty,time,rating ->
+                    showFilterScreen = false
+                    selectedCategory = category
+                    selectedDifficulty = difficulty
+                    selectedTime = time
+                    selectedRating = rating
+                })
 
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            // Difficulty Filter
-                            Text("Difficulty", style = MaterialTheme.typography.titleMedium)
-                            DropdownMenu(
-                                expanded = selectedDifficulty.value != null,
-                                onDismissRequest = { selectedDifficulty.value = null },
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                DropdownMenuItem(onClick = {
-                                    selectedDifficulty.value = "Easy"
-                                }, text = { Text("Easy") })
-                                DropdownMenuItem(onClick = {
-                                    selectedDifficulty.value = "Medium"
-                                }, text = { Text("Medium") })
-                                DropdownMenuItem(onClick = {
-                                    selectedDifficulty.value = "Hard"
-                                }, text = { Text("Hard") })
-                            }
-
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            // Apply Button
-                            Button(
-                                onClick = {
-                                    // Apply filters logic here
-                                    closeBottomSheet()
-                                },
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Text("Apply Filters")
-                            }
-
-                            Spacer(modifier = Modifier.height(8.dp))
-
-                            // Cancel Button to dismiss Dialog
-                            TextButton(
-                                onClick = {
-                                    closeBottomSheet()
-                                },
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Text("Cancel")
-                            }
-                        }}, onDismissRequest = {
-                            closeBottomSheet()
-                    })
-
-
-
-
-
+                IconButton(
+                    modifier = Modifier.align(Alignment.TopEnd).padding(12.dp),
+                    onClick = {
+                        showFilterScreen = false },
+                ) {
+                    Icon(Icons.Default.Close, contentDescription = "Close")
+                }
+            }
         }
     } else {
         LoadingScreen()
     }
+
+
 }
 
 
