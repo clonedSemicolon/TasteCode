@@ -14,6 +14,7 @@ import com.example.tastecode.business.route.Screen
 @Composable
 fun RecipeList(
     viewModel: RecipeViewModel,
+    recipeList:List<Recipe> = emptyList(),
     navHostController: NavHostController
 ) {
     val recipes by viewModel.recipes.observeAsState(emptyList())

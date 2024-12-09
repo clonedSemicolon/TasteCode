@@ -47,7 +47,6 @@ fun LoginButton(
     var showSuccessDialog by remember { mutableStateOf(false) }
     var showFailureDialog by remember { mutableStateOf(false) }
     var failureMessage by remember { mutableStateOf("") }
-    val scope = rememberCoroutineScope()
 
     Button(
         onClick = {
