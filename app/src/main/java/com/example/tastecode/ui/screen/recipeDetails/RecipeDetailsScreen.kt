@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -45,6 +46,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -118,6 +120,7 @@ fun RecipeDetailsScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(220.dp)
+                //Guna - remove the following two lines so that it fit screen
                 //.padding(horizontal = 12.dp)
                 //.clip(RoundedCornerShape(20.dp))
         ) {
@@ -126,8 +129,26 @@ fun RecipeDetailsScreen(navController: NavController) {
                 contentDescription = recipeData?.title,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(),
-                contentScale = ContentScale.FillWidth
+                    .fillMaxHeight()
+                    .clip(RoundedCornerShape(0.dp)),
+                contentScale = ContentScale.Crop
+            )
+            // Guna -Gradient overlay to blend the image with the background
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .height(60.dp)
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                Color.White.copy(alpha = 1.0f)
+                            ),
+                            startY = 0f,
+                            endY = 100f
+                        )
+                    )
             )
 
             // Back Button
