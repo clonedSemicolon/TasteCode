@@ -74,7 +74,7 @@ fun RecipeDetailsScreen(navController: NavController) {
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 500, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
-        )
+        ), label = ""
     )
 
     Column(
