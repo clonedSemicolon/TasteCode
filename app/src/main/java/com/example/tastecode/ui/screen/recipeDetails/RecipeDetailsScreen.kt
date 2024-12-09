@@ -1,4 +1,10 @@
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -59,6 +65,19 @@ fun RecipeDetailsScreen(navController: NavController) {
     val onBackPressedDispatcher =
         LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher// 0 for Ingredients, 1 for Procedure
 
+    //Infinite transition to animate the flashy text color
+    //Guna
+// Infinite transition to animate the flashy text color
+    val infiniteTransition = rememberInfiniteTransition()
+    val animatedColor by infiniteTransition.animateColor(
+        initialValue = Color.Red,
+        targetValue = Color.Transparent,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 500, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -100,8 +119,8 @@ fun RecipeDetailsScreen(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(220.dp)
-                .padding(horizontal = 12.dp)
-                .clip(RoundedCornerShape(20.dp))
+                //.padding(horizontal = 12.dp)
+                //.clip(RoundedCornerShape(20.dp))
         ) {
             AsyncImage(
                 model = recipeData?.imageUrl,
@@ -153,10 +172,17 @@ fun RecipeDetailsScreen(navController: NavController) {
                     Icon(
                         imageVector = Icons.Default.AccessTime,
                         contentDescription = null,
-                        modifier = Modifier.size(16.dp)
+                        modifier = Modifier.size(16.dp),
+                        //Guna
+                        tint = Color.Red
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = recipeData?.cookingTime ?: "")
+                    Text(
+                        text = recipeData?.cookingTime ?: "",
+                        color = animatedColor,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
         }
