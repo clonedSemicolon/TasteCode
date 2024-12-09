@@ -199,7 +199,7 @@ fun HeaderSection() {
     Spacer(modifier = Modifier.height(4.dp))
     Text(
         text = "johndoe@gmail.com", // Replace with user's email
-        fontSize = 14.sp,
+        fontSize = 18.sp,
         color = MaterialTheme.colorScheme.onBackground
     )
 }
@@ -275,10 +275,10 @@ fun ProfileScreen() {
                         icon = R.drawable.orderhistory, // Replace with your icon
                         content = {
                             Column {
-                                Text("- Order #1: Paneer Tikka - Delivered", fontSize = 14.sp)
-                                Text("- Order #2: Chicken Masala - Shipped", fontSize = 14.sp)
-                                Text("- Order #3: Turkey - Delivered", fontSize = 14.sp)
-                                Text("- Order #4: Pizza - In Transit", fontSize = 14.sp)
+                                Text("- Order #1: Paneer Tikka  ", fontSize = 18.sp)
+                                Text("- Order #2: Chicken Masala ", fontSize = 18.sp)
+                                Text("- Order #3: Turkey ", fontSize = 18.sp)
+                                Text("- Order #4: Pizza ", fontSize = 18.sp)
                             }
                         }
                     )
@@ -303,10 +303,10 @@ fun ProfileScreen() {
                         icon = R.drawable.favouriterecipes, // Replace with your icon
                         content = {
                             Column {
-                                Text("- Butter Chicken", fontSize = 14.sp)
-                                Text("- Veg Biryani", fontSize = 14.sp)
-                                Text("- Margherita Pizza", fontSize = 14.sp)
-                                Text("- Chocolate Cake", fontSize = 14.sp)
+                                Text("- Butter Chicken", fontSize = 18.sp)
+                                Text("- Veg Biryani", fontSize = 18.sp)
+                                Text("- Margherita Pizza", fontSize = 18.sp)
+                                Text("- Chocolate Cake", fontSize = 18.sp)
                             }
                         }
                     )
@@ -316,16 +316,16 @@ fun ProfileScreen() {
                         title = "Create Request",
                         icon = R.drawable.createrequest, // Replace with your icon
                         content = {
-                            Text("You can create a new service request here.", fontSize = 14.sp)
+                            Text("You can create a new service request here.", fontSize = 16.sp)
                         }
                     )
 
                     // Privacy Policy Section
                     ExpandableSection(
                         title = "Privacy Policy",
-                        icon = R.drawable.logout, // Replace with your icon
+                        icon = R.drawable.privacypolicy, // Replace with your icon
                         content = {
-                            Text("Read our terms and privacy policies.", fontSize = 14.sp)
+                            Text("Read our terms and privacy policies.", fontSize = 16.sp)
                         }
                     )
 
