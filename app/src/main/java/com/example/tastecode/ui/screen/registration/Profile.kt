@@ -4,6 +4,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -22,8 +24,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.tastecode.R
+import androidx.compose.ui.draw.clip
+import androidx.compose.animation.animateContentSize
 
-// Greenish Color Scheme
+
+// Color Scheme
 private val LightGreenColorScheme = lightColorScheme(
     primary = Color(0xFF4CAF50), // Green primary color
     onPrimary = Color.White,
@@ -33,22 +38,9 @@ private val LightGreenColorScheme = lightColorScheme(
     onSurface = Color(0xFF1B5E20)
 )
 
-private val DarkGreenColorScheme = darkColorScheme(
-    primary = Color(0xFF2E7D32), // Darker green primary
-    onPrimary = Color.White,
-    background = Color(0xFF1B5E20), // Dark green background
-    onBackground = Color.White,
-    surface = Color(0xFF2E7D32),
-    onSurface = Color.White
-)
-
 @Composable
 fun ProfileScreen(navController: NavController) {
-    var isDarkTheme by remember { mutableStateOf(false) }
-
-    MaterialTheme(
-        colorScheme = if (isDarkTheme) DarkGreenColorScheme else LightGreenColorScheme
-    ) {
+    MaterialTheme(colorScheme = LightGreenColorScheme) {
         Surface(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
@@ -57,82 +49,52 @@ fun ProfileScreen(navController: NavController) {
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Top App Bar and Profile Info
+                // Header Section
                 HeaderSection()
+
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Profile Options
-                Column(
+                // Favorite Recipes Section
+                ExpandableFavoriteRecipes()
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Change Password Option with Icon
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp))
-                        .padding(20.dp)
+                        .clickable { navController.navigate("changePassword") }
+                        .padding(vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Favorite Recipes Section
-                    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)) {
-                        Text(
-                            text = "Favorite Recipes",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Column {
-                            Text("- Butter Chicken", fontSize = 16.sp)
-                            Text("- Veg Biryani", fontSize = 16.sp)
-                            Text("- Margherita Pizza", fontSize = 16.sp)
-                            Text("- Chocolate Cake", fontSize = 16.sp)
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    // Change Password Section
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { navController.navigate("changePassword") }
-                            .padding(vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.changepass), // Replace with your icon
-                            contentDescription = "Change Password",
-                            modifier = Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.onBackground
-                        )
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Text(
-                            text = "Change Password",
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                    }
+                    Icon(
+                        painter = painterResource(R.drawable.changepass), // Replace with your icon
+                        contentDescription = "Change Password",
+                        modifier = Modifier.size(24.dp),
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Text(
+                        text = "Change Password",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.weight(1f)
+                    )
                 }
             }
         }
     }
 }
 
+
 @Composable
 fun HeaderSection() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 16.dp),
+            .padding(bottom = 16.dp)
     ) {
-        IconButton(
-            onClick = { /* Handle back navigation */ },
-            modifier = Modifier.align(Alignment.CenterStart)
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.backarrow), // Replace with your back arrow icon
-                contentDescription = "Back",
-                tint = Color.Unspecified
-            )
-        }
-
         Text(
             text = "Profile",
             fontWeight = FontWeight.Bold,
@@ -150,7 +112,7 @@ fun HeaderSection() {
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(R.drawable.ic_profilepicture), // Replace with your profile picture
+            painter = painterResource(R.drawable.ic_profilepicture),
             contentDescription = "Profile Picture",
             modifier = Modifier
                 .size(80.dp)
@@ -161,24 +123,133 @@ fun HeaderSection() {
     }
     Spacer(modifier = Modifier.height(8.dp))
     Text(
-        text = "John Doe", // Replace with user's full name
+        text = "John Doe",
         fontSize = 18.sp,
         fontWeight = FontWeight.Bold,
         color = MaterialTheme.colorScheme.onBackground
     )
     Spacer(modifier = Modifier.height(4.dp))
     Text(
-        text = "johndoe@gmail.com", // Replace with user's email
-        fontSize = 18.sp,
+        text = "johndoe@gmail.com",
+        fontSize = 14.sp,
         color = MaterialTheme.colorScheme.onBackground
     )
 }
 
 @Composable
-fun ChangePasswordScreen(navController: NavController) {
-    var oldPassword by remember { mutableStateOf("") }
-    var newPassword by remember { mutableStateOf("") }
+fun ExpandableFavoriteRecipes() {
+    var expanded by remember { mutableStateOf(false) }
 
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateContentSize()
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { expanded = !expanded }
+                .padding(vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.favouriterecipes), // Replace with your icon
+                contentDescription = "Favorite Recipes",
+                modifier = Modifier.size(24.dp),
+                tint = MaterialTheme.colorScheme.onBackground
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Text(
+                text = "Favorite Recipes",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.weight(1f)
+            )
+            Icon(
+                painter = painterResource(if (expanded) R.drawable.uparrow2 else R.drawable.downarrow),
+                contentDescription = if (expanded) "Collapse" else "Expand",
+                modifier = Modifier.size(20.dp),
+                tint = MaterialTheme.colorScheme.onBackground
+            )
+        }
+
+        if (expanded) {
+            Spacer(modifier = Modifier.height(8.dp))
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 300.dp) // Adjust height if needed
+            ) {
+                items(getFavoriteRecipes()) { recipe ->
+                    RecipeCard(recipe = recipe)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun RecipeCard(recipe: Recipe) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+            .height(120.dp),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp)
+        ) {
+            Image(
+                painter = painterResource(recipe.imageRes),
+                contentDescription = recipe.title,
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(RoundedCornerShape(16.dp)),
+                contentScale = ContentScale.Crop
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(vertical = 8.dp),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = recipe.title,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                Text(
+                    text = "By ${recipe.author}",
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                )
+                Text(
+                    text = "${recipe.time} min",
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+                )
+            }
+        }
+    }
+}
+
+data class Recipe(val title: String, val author: String, val time: Int, val imageRes: Int)
+
+fun getFavoriteRecipes() = listOf(
+    Recipe("Traditional Spare Ribs", "Chef John", 20, R.drawable.recipe_image1),
+    Recipe("Spice Roasted Chicken", "Mark Kelvin", 20, R.drawable.recipe_image2),
+    Recipe("Butter Chicken", "Chef Ayesha", 30, R.drawable.recipe_image3),
+    Recipe("Veg Biryani", "Chef Kumar", 25, R.drawable.recipe_image4)
+)
+
+@Composable
+fun ChangePasswordScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -186,31 +257,37 @@ fun ChangePasswordScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Back Button
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+        IconButton(
+            onClick = { navController.popBackStack() },
+            modifier = Modifier.align(Alignment.Start)
         ) {
-            IconButton(
-                onClick = { navController.popBackStack() },
-                modifier = Modifier.size(24.dp)
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.backarrow),
-                    contentDescription = "Back",
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
-            }
-            Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = "Change Password",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
+            Icon(
+                painter = painterResource(R.drawable.backarrow), // Replace with your back arrow icon
+                contentDescription = "Back"
             )
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        Text(
+            text = "Change Password",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        ChangePassword()
+    }
+}
+
+@Composable
+fun ChangePassword() {
+    var oldPassword by remember { mutableStateOf("") }
+    var newPassword by remember { mutableStateOf("") }
+
+    Column(modifier = Modifier.fillMaxWidth()) {
         // Old Password Input
         TextField(
             value = oldPassword,
@@ -221,9 +298,7 @@ fun ChangePasswordScreen(navController: NavController) {
                 .padding(bottom = 8.dp),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface
+                unfocusedContainerColor = Color.Transparent
             )
         )
 
@@ -237,33 +312,25 @@ fun ChangePasswordScreen(navController: NavController) {
                 .padding(bottom = 8.dp),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface
+                unfocusedContainerColor = Color.Transparent
             )
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = { navController.popBackStack() }, // Navigate back to Profile Screen
-            modifier = Modifier.align(Alignment.End)
-        ) {
+        // Save Button
+        Button(onClick = { /* Handle password change */ }, modifier = Modifier.align(Alignment.End)) {
             Text("Save")
         }
     }
 }
 
-@Composable
-fun AppNavigation() {
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "profile") {
-        composable("profile") { ProfileScreen(navController) }
-        composable("changePassword") { ChangePasswordScreen(navController) }
-    }
-}
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewProfileScreen() {
-    AppNavigation()
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = "profile") {
+        composable("profile") { ProfileScreen(navController = navController) }
+        composable("changePassword") { ChangePasswordScreen(navController = navController) }
+    }
 }
+
