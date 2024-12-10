@@ -5,6 +5,7 @@ import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,12 +16,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -48,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -166,11 +166,20 @@ fun RecipeDetailsScreen(navController: NavController) {
                     .padding(horizontal = 8.dp, vertical = 4.dp)
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
+
+                    /*
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = null,
                         tint = Color(0xFFFFB300),
                         modifier = Modifier.size(16.dp)
+                    )*/
+
+                    Image(
+                        painter = painterResource(id = R.drawable.custom_star),
+                        contentDescription = "star Icon",
+                        modifier = Modifier.size(20.dp),
+                        colorFilter = ColorFilter.tint(Color.Magenta)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(text = recipeData?.serving ?: "")
@@ -242,7 +251,7 @@ fun RecipeDetailsScreen(navController: NavController) {
 
                 // Chef's Hat Icon
                 AsyncImage(
-                    model = R.drawable.img_2,
+                    model = R.drawable.chef_hat_2,
                     contentDescription = "Chef's Hat",
                     modifier = Modifier
                         .width(48.dp)
