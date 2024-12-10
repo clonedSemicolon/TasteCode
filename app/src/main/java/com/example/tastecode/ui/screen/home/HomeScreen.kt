@@ -75,6 +75,51 @@ fun HomeScreen(
                     NavigationDrawerItem(
                         icon = {
                             Icon(
+                                Icons.Filled.QuestionMark,
+                                contentDescription = "FAQ",
+                                tint = Color(0xFF129575)
+                            )
+                        },
+                        label = {
+                            Text(
+                                "Faq",
+                                color = Color(0xFF129575),
+                                fontWeight = FontWeight(600)
+                            )
+                        },
+                        onClick = {
+                            scope.launch {
+
+                            }
+                        },
+                        selected = false
+                    )
+
+                    NavigationDrawerItem(
+                        icon = {
+                            Icon(
+                                Icons.Filled.Message,
+                                contentDescription = "About",
+                                tint = Color(0xFF129575)
+                            )
+                        },
+                        label = {
+                            Text(
+                                "About",
+                                color = Color(0xFF129575),
+                                fontWeight = FontWeight(600)
+                            )
+                        },
+                        onClick = {
+                            scope.launch {
+
+                            }
+                        },
+                        selected = false
+                    )
+                    NavigationDrawerItem(
+                        icon = {
+                            Icon(
                                 Icons.Filled.Logout,
                                 contentDescription = "Menu",
                                 tint = Color(0xFF129575)
@@ -95,6 +140,7 @@ fun HomeScreen(
                         },
                         selected = false
                     )
+
                 }
             }
         ) {
