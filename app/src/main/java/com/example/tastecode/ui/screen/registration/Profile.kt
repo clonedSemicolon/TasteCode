@@ -29,7 +29,6 @@ private val LightGreenColorScheme = lightColorScheme(
     surface = Color.White,
     onSurface = Color(0xFF1B5E20)
 )
-
 private val DarkGreenColorScheme = darkColorScheme(
     primary = Color(0xFF2E7D32), // Darker green primary
     onPrimary = Color.White,
@@ -269,34 +268,6 @@ fun ProfileScreen() {
                         .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(12.dp))
                         .padding(20.dp)
                 ) {
-                    // Order History Section
-                    ExpandableSection(
-                        title = "Order History",
-                        icon = R.drawable.orderhistory, // Replace with your icon
-                        content = {
-                            Column {
-                                Text("- Order #1: Paneer Tikka  ", fontSize = 18.sp)
-                                Text("- Order #2: Chicken Masala ", fontSize = 18.sp)
-                                Text("- Order #3: Turkey ", fontSize = 18.sp)
-                                Text("- Order #4: Pizza ", fontSize = 18.sp)
-                            }
-                        }
-                    )
-
-                    // Shipping Address Section
-                    ExpandableSection(
-                        title = "Shipping Address",
-                        icon = R.drawable.ic_shipping, // Replace with your icon
-                        content = { EditableShippingAddress() }
-                    )
-
-                    // Change Password Section
-                    ExpandableSection(
-                        title = "Change Password",
-                        icon = R.drawable.changepass, // Replace with your icon
-                        content = { ChangePassword() }
-                    )
-
                     // Favorite Recipes Section
                     ExpandableSection(
                         title = "Favorite Recipes",
@@ -311,60 +282,20 @@ fun ProfileScreen() {
                         }
                     )
 
-                    // Create Request Section
+                    // Change Password Section
                     ExpandableSection(
-                        title = "Create Request",
-                        icon = R.drawable.createrequest, // Replace with your icon
-                        content = {
-                            Text("You can create a new service request here.", fontSize = 16.sp)
-                        }
-                    )
-
-                    // Privacy Policy Section
-                    ExpandableSection(
-                        title = "Privacy Policy",
-                        icon = R.drawable.privacypolicy, // Replace with your icon
-                        content = {
-                            Text("Read our terms and privacy policies.", fontSize = 16.sp)
-                        }
-                    )
-
-                    // Settings Section
-                    ExpandableSection(
-                        title = "Settings",
-                        icon = R.drawable.ic_setting, // Replace with your icon
-                        content = {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 8.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Text(
-                                    text = "Enable Dark Mode",
-                                    modifier = Modifier.weight(1f),
-                                    fontSize = 16.sp,
-                                    color = MaterialTheme.colorScheme.onBackground
-                                )
-                                Switch(
-                                    checked = isDarkTheme,
-                                    onCheckedChange = { isDarkTheme = it }
-                                )
-                            }
-                        }
-                    )
-
-                    // Log Out Section
-                    ProfileOptionItem(
-                        title = "Log out",
-                        icon = R.drawable.logout, // Replace with your icon
-                        showDivider = false
+                        title = "Change Password",
+                        icon = R.drawable.changepass, // Replace with your icon
+                        content = { ChangePassword() }
                     )
                 }
             }
         }
     }
 }
+
+
+
 
 @Composable
 fun ExpandableSection(title: String, icon: Int, content: @Composable () -> Unit) {
