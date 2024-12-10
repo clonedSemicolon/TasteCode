@@ -9,7 +9,6 @@ import com.example.tastecode.data.db.UserDataBase
 
 class RecipeDetailsUseCase {
 
-
     fun markRecipeAsFavourite(
         context: Context,
         recipe: Recipe){

@@ -20,6 +20,7 @@ composeBom = "2024.04.01"
 identityJvm = "202408.1"
 firebaseDatabaseKtx = "21.0.0"
 lifecycleViewmodelCompose = "2.8.7"
+lottieCompose = "4.0.0"
 multidex = "2.0.1"
 navigationCompose = "2.8.3"
 runtimeLivedata = "1.7.5"
@@ -68,6 +69,7 @@ firebase-database = { module = "com.google.firebase:firebase-database" }
 java-jwt = { module = "com.auth0:java-jwt", version.ref = "javaJwt" }
 jbcrypt = { module = "org.mindrot:jbcrypt", version.ref = "jbcrypt" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
