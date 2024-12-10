@@ -21,7 +21,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,13 +30,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.tastecode.business.route.Screen
-import com.example.tastecode.business.utilities.BusinessUtils
 import com.example.tastecode.business.utilities.BusinessUtils.executeInBackground
 import com.example.tastecode.business.utilities.Constants
 import com.example.tastecode.data.Database
-import com.example.tastecode.data.db.AppDatabase
+import com.example.tastecode.data.db.UserDataBase
 import com.example.tastecode.security.JwtService
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -85,7 +82,7 @@ fun LoginButton(
         if (showSuccessDialog) {
             LaunchedEffect(Unit) {
                 this.executeInBackground({
-                    val db = AppDatabase.getDatabase(context)
+                    val db = UserDataBase.getUserDatabase(context)
                     val userToken = jwtService.getToken()
                     userToken?.let {
                         SharedData.userData = db.userDao().getUser()

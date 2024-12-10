@@ -3,7 +3,7 @@ package com.example.tastecode.data
 import SharedData
 import android.content.Context
 import android.util.Log
-import com.example.tastecode.data.db.AppDatabase
+import com.example.tastecode.data.db.UserDataBase
 import com.example.tastecode.security.JwtService
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -46,7 +46,7 @@ class Database {
                     if (PasswordService.verifyPassword(password, storedPassword.orEmpty())) {
                         val jwtService = JwtService(context,"1A6Y36H6L2", "tastecode")
                         val token = jwtService.generateToken(username)
-                        val db = AppDatabase.getDatabase(context)
+                        val db = UserDataBase.getUserDatabase(context)
 
                         GlobalScope.launch {
                             jwtService.saveToken(token)

@@ -180,22 +180,6 @@ fun HomeScreen(
                         )
                     )
 
-//                    OutlinedTextField(
-//                        value = searchQuery.value,
-//                        onValueChange = { searchQuery.value = it },
-//                        label = { Text("Search Recipes") },
-//                        modifier = Modifier
-//                            .fillMaxWidth(0.8f) // Fill 80% of the width for the text field
-//                            .height(42.dp) // Set a smaller height for the search box
-//                            .background(Color.Transparent, shape = MaterialTheme.shapes.medium)
-//                            .padding(horizontal = 16.dp),
-//                        singleLine = true,
-//                        colors = TextFieldDefaults.outlinedTextFieldColors(
-//                            unfocusedBorderColor = Color(0xFF129575),
-//                            focusedBorderColor = Color(0xFF129575)
-//                        )
-//                    )
-
                     IconButton(
                         onClick = { showFilterScreen = true },
                         modifier = Modifier.padding(start = 8.dp) // Add padding between the button and text field

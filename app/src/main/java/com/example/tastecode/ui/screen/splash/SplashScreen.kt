@@ -27,7 +27,7 @@ import com.example.tastecode.R
 import com.example.tastecode.business.route.Screen
 import com.example.tastecode.business.utilities.BusinessUtils.executeInBackground
 import com.example.tastecode.business.utilities.Constants
-import com.example.tastecode.data.db.AppDatabase
+import com.example.tastecode.data.db.UserDataBase
 import com.example.tastecode.security.JwtService
 import kotlinx.coroutines.delay
 
@@ -37,7 +37,7 @@ fun SplashScreen(navHostController: NavHostController) {
 
     val context = LocalContext.current
     val jwtService = JwtService(context,Constants.SECRET_KEY, Constants.JWT_ISSUER)
-    val db = AppDatabase.getDatabase(context)
+    val db = UserDataBase.getUserDatabase(context)
 
 
 

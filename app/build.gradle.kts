@@ -110,4 +110,7 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
 
 
+    implementation (libs.kotlinx.serialization.json)
+
+
 }

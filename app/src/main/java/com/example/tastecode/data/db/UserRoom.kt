@@ -1,7 +1,5 @@
 package com.example.tastecode.data.db
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -23,3 +21,4 @@ interface UserDao {
     @Query("SELECT * FROM users ORDER BY userId ASC LIMIT 1")
     suspend fun getUser(): User?
 }
+

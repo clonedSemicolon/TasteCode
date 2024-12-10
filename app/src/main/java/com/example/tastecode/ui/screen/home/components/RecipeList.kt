@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.tastecode.business.route.Screen
+import com.example.tastecode.data.Recipe
 
 @Composable
 fun RecipeList(
@@ -29,15 +30,7 @@ fun RecipeList(
             RecipeItem(
                 recipe = recipe,
                 onClick = {
-                    SharedData.recipeData = RecipeData(
-                        title = recipe.name,
-                        imageUrl = recipe.image,
-                        author = recipe.author,
-                        cookingTime = recipe.times?.get("Cooking"),
-                        ingridients = recipe.ingredients,
-                        steps = recipe.steps,
-                        serving = recipe.serves.toString()
-                    )
+                    SharedData.recipe = recipe
                     navHostController.navigate(Screen.RecipeDetailsScreen.route)
                 }
             )

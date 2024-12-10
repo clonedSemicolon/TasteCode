@@ -13,6 +13,7 @@ coreKtx = "1.10.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
+kotlinxSerializationJson = "1.0.1"
 lifecycleRuntimeKtx = "2.6.1"
 activityCompose = "1.8.0"
 composeBom = "2024.04.01"
@@ -66,6 +67,7 @@ firebase-bom-v3360 = { module = "com.google.firebase:firebase-bom", version.ref 
 firebase-database = { module = "com.google.firebase:firebase-database" }
 java-jwt = { module = "com.auth0:java-jwt", version.ref = "javaJwt" }
 jbcrypt = { module = "org.mindrot:jbcrypt", version.ref = "jbcrypt" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

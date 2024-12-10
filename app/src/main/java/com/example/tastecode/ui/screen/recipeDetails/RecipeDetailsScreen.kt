@@ -19,6 +19,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material.icons.filled.Share
@@ -34,13 +35,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -50,14 +54,21 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.tastecode.R
+import com.example.tastecode.business.repository.RecipeDetailsUseCase
+import com.example.tastecode.business.utilities.BusinessUtils.executeInBackground
+import com.example.tastecode.data.db.RecipeDatabase
 import com.example.tastecode.ui.theme.Poppins
+import kotlinx.coroutines.launch
 
 @Composable
 fun RecipeDetailsScreen(navController: NavController) {
-    val recipeData = SharedData.recipeData
+    val recipeData = SharedData.recipe
     var selectedTab by remember { mutableIntStateOf(0) }
     val onBackPressedDispatcher =
         LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher// 0 for Ingredients, 1 for Procedure
+    var isFavourite  by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -104,8 +115,8 @@ fun RecipeDetailsScreen(navController: NavController) {
                 .clip(RoundedCornerShape(20.dp))
         ) {
             AsyncImage(
-                model = recipeData?.imageUrl,
-                contentDescription = recipeData?.title,
+                model = recipeData?.image,
+                contentDescription = recipeData?.name,
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(),
@@ -134,7 +145,7 @@ fun RecipeDetailsScreen(navController: NavController) {
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = recipeData?.serving ?: "")
+                    Text(text = recipeData?.serves.toString() ?: "")
                 }
             }
 
@@ -156,7 +167,7 @@ fun RecipeDetailsScreen(navController: NavController) {
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = recipeData?.cookingTime ?: "")
+                    Text(text = recipeData?.times?.get("Cooking") ?: "")
                 }
             }
         }
@@ -170,7 +181,7 @@ fun RecipeDetailsScreen(navController: NavController) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = recipeData?.title ?: "",
+                    text = recipeData?.name ?: "",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -203,7 +214,17 @@ fun RecipeDetailsScreen(navController: NavController) {
 
                 Button(
                     onClick = {
-                    /* Mark as favourite */
+                        SharedData.recipe?.let {recipe ->
+                            coroutineScope.launch {
+                                executeInBackground({
+                                    val db = RecipeDatabase.getFavRecipeDatabase(context)
+                                    db.recipeDao().insertFavourite(recipe)
+                                },{
+                                    isFavourite = true
+                                })
+                            }
+                        }
+
                     },
                     modifier = Modifier.padding(horizontal = 16.dp),
                     colors = ButtonDefaults.buttonColors(
@@ -212,7 +233,7 @@ fun RecipeDetailsScreen(navController: NavController) {
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
-                            imageVector = Icons.Default.FavoriteBorder,
+                            imageVector = if(isFavourite)Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                             contentDescription = null,
                             modifier = Modifier.size(16.dp),
                             tint = Color(0xFF129575)
@@ -267,13 +288,13 @@ fun RecipeDetailsScreen(navController: NavController) {
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = "${recipeData?.serving} Serves" ?: "",
+                            text = "${recipeData?.serves} Serves" ?: "",
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
 
                     Text(
-                        text = "${recipeData?.ingridients?.size ?: 0} Items",
+                        text = "${recipeData?.ingredients?.size ?: 0} Items",
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -289,7 +310,7 @@ fun RecipeDetailsScreen(navController: NavController) {
                 when (selectedTab) {
                     0 -> {
                         // Ingredients List
-                        recipeData?.ingridients?.forEach { ingredient ->
+                        recipeData?.ingredients?.forEach { ingredient ->
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth()

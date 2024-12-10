@@ -1,6 +1,7 @@
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.tastecode.data.Recipe
 import com.google.firebase.firestore.FirebaseFirestore
 
 class RecipeRepository {

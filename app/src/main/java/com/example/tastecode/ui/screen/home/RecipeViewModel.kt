@@ -1,6 +1,7 @@
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.tastecode.data.Recipe
 
 class RecipeViewModel(
     private val repository: RecipeRepository) : ViewModel() {
