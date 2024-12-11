@@ -159,7 +159,7 @@ fun HeaderSection(selectedImageUri: Uri?, onProfilePictureClick: () -> Unit) {
     Spacer(modifier = Modifier.height(4.dp))
     Text(
         text = "johndoe@gmail.com",
-        fontSize = 14.sp,
+        fontSize = 18.sp,
         color = MaterialTheme.colorScheme.onBackground
     )
 }
@@ -286,41 +286,84 @@ fun getFavoriteRecipes() = listOf(
 
 @Composable
 fun ChangePasswordScreen(navController: NavController) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Back Button
-        IconButton(
-            onClick = { navController.popBackStack() },
-            modifier = Modifier.align(Alignment.Start)
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.backarrow), // Replace with your back arrow icon
-                contentDescription = "Back"
-            )
+    MaterialTheme(colorScheme = LightGreenColorScheme) { // Apply the greenish theme
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // Back Button
+                IconButton(
+                    onClick = { navController.popBackStack() },
+                    modifier = Modifier.align(Alignment.Start)
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.backarrow), // Replace with your back arrow icon
+                        contentDescription = "Back",
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Title
+                Text(
+                    text = "Change Password",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Old Password Field
+                var oldPassword by remember { mutableStateOf("") }
+                TextField(
+                    value = oldPassword,
+                    onValueChange = { oldPassword = it },
+                    label = { Text("Old Password") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 10.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                        unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface
+                    )
+                )
+
+                // New Password Field
+                var newPassword by remember { mutableStateOf("") }
+                TextField(
+                    value = newPassword,
+                    onValueChange = { newPassword = it },
+                    label = { Text("New Password") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 10.dp),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                        unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface
+                    )
+                )
+
+                // Save Button
+                Button(
+                    onClick = { /* Implement save logic here */ },
+                    modifier = Modifier.align(Alignment.End)
+                ) {
+                    Text("Save")
+                }
+            }
         }
-
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-
-        Text(
-            text = "Change Password",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-
-        ChangePassword()
     }
 }
+
 
 
 @Composable
@@ -337,7 +380,7 @@ fun ChangePassword() {
             label = { Text("Old Password") },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp),
+                .padding(bottom = 10.dp),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent
@@ -352,7 +395,7 @@ fun ChangePassword() {
             label = { Text("New Password") },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp),
+                .padding(bottom = 10.dp),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent
