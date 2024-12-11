@@ -1,5 +1,6 @@
 package com.example.tastecode.ui.screen.profile
 
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,6 +27,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.tastecode.R
 import androidx.compose.ui.draw.clip
 import androidx.compose.animation.animateContentSize
+import android.net.Uri
+import coil.compose.rememberAsyncImagePainter
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 
 
 // Color Scheme
@@ -38,8 +43,15 @@ private val LightGreenColorScheme = lightColorScheme(
     onSurface = Color(0xFF1B5E20)
 )
 
+
 @Composable
 fun ProfileScreen(navController: NavController) {
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri -> selectedImageUri = uri }
+    )
+
     MaterialTheme(colorScheme = LightGreenColorScheme) {
         Surface(modifier = Modifier.fillMaxSize()) {
             Column(
@@ -49,8 +61,11 @@ fun ProfileScreen(navController: NavController) {
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Header Section
-                HeaderSection()
+                // Header Section with Profile Picture
+                HeaderSection(
+                    selectedImageUri = selectedImageUri,
+                    onProfilePictureClick = { imagePickerLauncher.launch("image/*") }
+                )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -88,8 +103,11 @@ fun ProfileScreen(navController: NavController) {
 }
 
 
+
+
+
 @Composable
-fun HeaderSection() {
+fun HeaderSection(selectedImageUri: Uri?, onProfilePictureClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -108,18 +126,28 @@ fun HeaderSection() {
     Box(
         modifier = Modifier
             .size(100.dp)
-            .background(MaterialTheme.colorScheme.surface, CircleShape),
+            .clip(CircleShape)
+            .background(MaterialTheme.colorScheme.surface)
+            .clickable { onProfilePictureClick() },
         contentAlignment = Alignment.Center
     ) {
-        Image(
-            painter = painterResource(R.drawable.ic_profilepicture),
-            contentDescription = "Profile Picture",
-            modifier = Modifier
-                .size(80.dp)
-                .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f), CircleShape)
-                .padding(2.dp),
-            contentScale = ContentScale.Crop
-        )
+        if (selectedImageUri != null) {
+            Image(
+                painter = rememberAsyncImagePainter(model = selectedImageUri),
+                contentDescription = "Profile Picture",
+                modifier = Modifier
+                    .size(80.dp)
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
+            )
+        } else {
+            Icon(
+                painter = painterResource(R.drawable.ic_profilepicture),
+                contentDescription = "Default Profile Picture",
+                modifier = Modifier.size(80.dp),
+                tint = MaterialTheme.colorScheme.primary
+            )
+        }
     }
     Spacer(modifier = Modifier.height(8.dp))
     Text(
@@ -136,9 +164,12 @@ fun HeaderSection() {
     )
 }
 
+
+
 @Composable
 fun ExpandableFavoriteRecipes() {
     var expanded by remember { mutableStateOf(false) }
+
 
     Column(
         modifier = Modifier
@@ -174,6 +205,7 @@ fun ExpandableFavoriteRecipes() {
             )
         }
 
+
         if (expanded) {
             Spacer(modifier = Modifier.height(8.dp))
             LazyColumn(
@@ -188,6 +220,7 @@ fun ExpandableFavoriteRecipes() {
         }
     }
 }
+
 
 @Composable
 fun RecipeCard(recipe: Recipe) {
@@ -239,7 +272,9 @@ fun RecipeCard(recipe: Recipe) {
     }
 }
 
+
 data class Recipe(val title: String, val author: String, val time: Int, val imageRes: Int)
+
 
 fun getFavoriteRecipes() = listOf(
     Recipe("Traditional Spare Ribs", "Chef John", 20, R.drawable.recipe_image1),
@@ -247,6 +282,7 @@ fun getFavoriteRecipes() = listOf(
     Recipe("Butter Chicken", "Chef Ayesha", 30, R.drawable.recipe_image3),
     Recipe("Veg Biryani", "Chef Kumar", 25, R.drawable.recipe_image4)
 )
+
 
 @Composable
 fun ChangePasswordScreen(navController: NavController) {
@@ -267,7 +303,9 @@ fun ChangePasswordScreen(navController: NavController) {
             )
         }
 
+
         Spacer(modifier = Modifier.height(16.dp))
+
 
         Text(
             text = "Change Password",
@@ -276,16 +314,20 @@ fun ChangePasswordScreen(navController: NavController) {
             color = MaterialTheme.colorScheme.onBackground
         )
 
+
         Spacer(modifier = Modifier.height(24.dp))
+
 
         ChangePassword()
     }
 }
 
+
 @Composable
 fun ChangePassword() {
     var oldPassword by remember { mutableStateOf("") }
     var newPassword by remember { mutableStateOf("") }
+
 
     Column(modifier = Modifier.fillMaxWidth()) {
         // Old Password Input
@@ -302,6 +344,7 @@ fun ChangePassword() {
             )
         )
 
+
         // New Password Input
         TextField(
             value = newPassword,
@@ -316,12 +359,15 @@ fun ChangePassword() {
             )
         )
 
+
         // Save Button
         Button(onClick = { /* Handle password change */ }, modifier = Modifier.align(Alignment.End)) {
             Text("Save")
         }
     }
 }
+
+
 
 
 @Preview(showBackground = true)
