@@ -251,7 +251,7 @@ fun RecipeDetailsScreen(navController: NavController) {
                     },
                     modifier = Modifier.padding(horizontal = 16.dp),
                     colors = ButtonDefaults.buttonColors(
-                        Color.Transparent
+                        Color.Transparent // Original color, not the same as rating badge
                     )
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -259,11 +259,12 @@ fun RecipeDetailsScreen(navController: NavController) {
                             imageVector = Icons.Default.FavoriteBorder,
                             contentDescription = null,
                             modifier = Modifier.size(16.dp),
-                            tint = Color(0xFF129575)
+                            //tint = Color(0xFF129575)
+                            tint = Color(0xFF800080)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
-                        Text(text = "Favourite", color = Color(0xFF129575))
-                    }
+                        Text(text = "Favourite", color = Color(0xFF800080))
+                        }
                 }
             }
 
@@ -417,6 +418,7 @@ fun RecipeDetailsScreen(navController: NavController) {
 fun PreviewRecipeDetails() {
     RecipeDetailsScreen(fakeNavController())
 }
+
 
 
 
