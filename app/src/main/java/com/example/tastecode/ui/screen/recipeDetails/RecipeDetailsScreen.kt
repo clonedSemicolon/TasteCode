@@ -117,30 +117,7 @@ fun RecipeDetailsScreen(navController: NavController) {
                     )
             )
 
-            // Rating Badge
-            Box(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .align(Alignment.TopEnd)
-                    .background(
-                        color = Color(0xFFFFF9C4),
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        painter = painterResource(id = R.drawable.custom_star),
-                        contentDescription = "star Icon",
-                        modifier = Modifier.size(20.dp),
-                        colorFilter = ColorFilter.tint(Color.Magenta)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = recipeData?.serving ?: "")
-                }
-            }
-
-            // Cooking Time Badge
+            // Cooking Time Badge (keeps its position)
             Box(
                 modifier = Modifier
                     .padding(16.dp)
@@ -165,6 +142,29 @@ fun RecipeDetailsScreen(navController: NavController) {
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
+                }
+            }
+
+            // Rating Badge (placed in front of the clock)
+            Box(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.BottomStart) // Aligns to the left side (front of the clock)
+                    .background(
+                        color = Color(0xFFFFF9C4),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Image(
+                        painter = painterResource(id = R.drawable.custom_star),
+                        contentDescription = "star Icon",
+                        modifier = Modifier.size(20.dp),
+                        colorFilter = ColorFilter.tint(Color.Magenta)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = recipeData?.serving ?: "")
                 }
             }
         }
@@ -417,6 +417,7 @@ fun RecipeDetailsScreen(navController: NavController) {
 fun PreviewRecipeDetails() {
     RecipeDetailsScreen(fakeNavController())
 }
+
 
 
 
