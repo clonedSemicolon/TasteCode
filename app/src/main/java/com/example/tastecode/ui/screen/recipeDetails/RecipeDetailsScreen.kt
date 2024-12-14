@@ -65,10 +65,9 @@ fun RecipeDetailsScreen(navController: NavController) {
     val recipeData = SharedData.recipeData
     var selectedTab by remember { mutableIntStateOf(0) }
     val onBackPressedDispatcher =
-        LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher// 0 for Ingredients, 1 for Procedure
+        LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher // 0 for Ingredients, 1 for Procedure
 
-
-// Guna - Infinite transition to animate the flashy text color
+    // Infinite transition to animate the flashy text color
     val infiniteTransition = rememberInfiniteTransition()
     val animatedColor by infiniteTransition.animateColor(
         initialValue = Color.Red,
@@ -84,6 +83,92 @@ fun RecipeDetailsScreen(navController: NavController) {
             .fillMaxSize()
             .background(Color.White)
     ) {
+        // Image Section with Overlays
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp) // Increased height to give more space for image stretching
+                .padding(top = 17.5.dp) // Added top padding to move the image slightly down
+        ) {
+            AsyncImage(
+                model = recipeData?.imageUrl,
+                contentDescription = recipeData?.title,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight() // Ensures the image stretches to the full height of the container
+                    .clip(RoundedCornerShape(0.dp)),
+                contentScale = ContentScale.Crop // Ensures the image is cropped to maintain aspect ratio
+            )
+            // Gradient overlay to blend the image with the background
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .height(60.dp)
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                Color.White.copy(alpha = 1.0f)
+                            ),
+                            startY = 0f,
+                            endY = 100f
+                        )
+                    )
+            )
+
+            // Rating Badge
+            Box(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.TopEnd)
+                    .background(
+                        color = Color(0xFFFFF9C4),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Image(
+                        painter = painterResource(id = R.drawable.custom_star),
+                        contentDescription = "star Icon",
+                        modifier = Modifier.size(20.dp),
+                        colorFilter = ColorFilter.tint(Color.Magenta)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(text = recipeData?.serving ?: "")
+                }
+            }
+
+            // Cooking Time Badge
+            Box(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.BottomEnd)
+                    .background(
+                        color = Color.White.copy(alpha = 0.7f),
+                        shape = RoundedCornerShape(8.dp)
+                    )
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.AccessTime,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp),
+                        tint = Color.Red
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = recipeData?.cookingTime ?: "",
+                        color = animatedColor,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -115,109 +200,10 @@ fun RecipeDetailsScreen(navController: NavController) {
                 )
             }
         }
-        // Image Section with Overlays
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(220.dp)
-                //Guna - remove the following two lines so that it fit screen
-                //.padding(horizontal = 12.dp)
-                //.clip(RoundedCornerShape(20.dp))
-        ) {
-            AsyncImage(
-                model = recipeData?.imageUrl,
-                contentDescription = recipeData?.title,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .clip(RoundedCornerShape(0.dp)),
-                contentScale = ContentScale.Crop
-            )
-            // Guna -Gradient overlay to blend the image with the background
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-                    .height(60.dp)
-                    .background(
-                        Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                Color.White.copy(alpha = 1.0f)
-                            ),
-                            startY = 0f,
-                            endY = 100f
-                        )
-                    )
-            )
-
-            // Back Button
-
-
-            // Rating Badge
-            Box(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .align(Alignment.TopEnd)
-                    .background(
-                        color = Color(0xFFFFF9C4),
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-
-                    /*
-                    Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = null,
-                        tint = Color(0xFFFFB300),
-                        modifier = Modifier.size(16.dp)
-                    )*/
-
-                    Image(
-                        painter = painterResource(id = R.drawable.custom_star),
-                        contentDescription = "star Icon",
-                        modifier = Modifier.size(20.dp),
-                        colorFilter = ColorFilter.tint(Color.Magenta)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = recipeData?.serving ?: "")
-                }
-            }
-
-            // Cooking Time Badge
-            Box(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .align(Alignment.BottomEnd)
-                    .background(
-                        color = Color.White.copy(alpha = 0.7f),
-                        shape = RoundedCornerShape(8.dp)
-                    )
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Default.AccessTime,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp),
-                        //Guna
-                        tint = Color.Red
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = recipeData?.cookingTime ?: "",
-                        color = animatedColor,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
-        }
 
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .padding(top = 4.dp, start = 16.dp, end = 16.dp, bottom = 32.dp) // Reduced top padding to move everything up
         ) {
             // Title and Reviews
             Row(
@@ -233,20 +219,11 @@ fun RecipeDetailsScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(24.dp))
 
-
             // Author Section
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                // Author Avatar
-                /*Box(
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(CircleShape)
-                        .background(Color.LightGray)
-                )*/
-
                 Spacer(modifier = Modifier.width(12.dp))
 
                 // Chef's Hat Icon
@@ -259,7 +236,7 @@ fun RecipeDetailsScreen(navController: NavController) {
                         .padding(end = 8.dp)
                 )
 
-                // chef's Name
+                // Chef's Name
                 Text(
                     text = recipeData?.author ?: "",
                     style = MaterialTheme.typography.bodyLarge,
@@ -270,11 +247,11 @@ fun RecipeDetailsScreen(navController: NavController) {
 
                 Button(
                     onClick = {
-                    /* Mark as favourite */
+                        /* Mark as favourite */
                     },
                     modifier = Modifier.padding(horizontal = 16.dp),
                     colors = ButtonDefaults.buttonColors(
-                         Color.Transparent
+                        Color.Transparent
                     )
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -431,8 +408,6 @@ fun RecipeDetailsScreen(navController: NavController) {
                     }
                 }
             }
-
-
         }
     }
 }
@@ -442,3 +417,17 @@ fun RecipeDetailsScreen(navController: NavController) {
 fun PreviewRecipeDetails() {
     RecipeDetailsScreen(fakeNavController())
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
