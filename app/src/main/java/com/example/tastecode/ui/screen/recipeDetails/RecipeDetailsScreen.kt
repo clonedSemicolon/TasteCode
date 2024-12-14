@@ -240,7 +240,7 @@ fun RecipeDetailsScreen(navController: NavController) {
                 Text(
                     text = recipeData?.author ?: "",
                     style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Bold
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
