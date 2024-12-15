@@ -45,24 +45,26 @@ fun HomeScreen(
     // State to manage search query and filters
     val searchQuery = remember { mutableStateOf("") }
 
-    var selectedCategory:String? = null
-    var selectedDifficulty:String? = null
-    var selectedTime:String? = null
-    var selectedRating:String? = null
+    val selectedCategory = remember { mutableStateOf<String?>(null) }
+    val selectedDifficulty = remember { mutableStateOf<String?>(null) }
+    val selectedTime = remember { mutableStateOf<String?>(null) }
+    val selectedRating = remember { mutableStateOf<String?>(null) }
 
 
     // Function to filter recipes based on search and filters
-    val filteredRecipes = recipes.filter {
-        (searchQuery.value.isEmpty() || it.name?.contains(
-            searchQuery.value,
-            ignoreCase = true
-        ) == true) &&
-                (selectedCategory?.let { category -> it.dish_type == category } ?: true) &&
-                (selectedDifficulty?.let { difficulty -> it.difficult == difficulty } ?: true)
+    val filteredRecipes = recipes.filter { recipe ->
+        (searchQuery.value.isEmpty() || recipe.name?.contains(searchQuery.value, ignoreCase = true) == true) &&
+                (selectedCategory.value.isNullOrEmpty() || selectedCategory.value == recipe.dish_type) &&
+                (selectedDifficulty.value.isNullOrEmpty() || selectedDifficulty.value == recipe.difficult) &&
+                (selectedTime.value.isNullOrEmpty() || selectedTime.value == recipe.times?.get("total")) &&
+                (selectedRating.value.isNullOrEmpty() || selectedRating.value?.toIntOrNull() == recipe.rattings)
     }
 
 
-    var showFilterScreen by remember { mutableStateOf(false) }
+
+
+
+    var showFilterScreen = remember { mutableStateOf(false) }
 
     if (filteredRecipes.isNotEmpty()) {
         ModalNavigationDrawer(
@@ -227,7 +229,7 @@ fun HomeScreen(
                     )
 
                     IconButton(
-                        onClick = { showFilterScreen = true },
+                        onClick = { showFilterScreen.value = true },
                         modifier = Modifier.padding(start = 8.dp) // Add padding between the button and text field
                     ) {
                         Icon(
@@ -251,7 +253,7 @@ fun HomeScreen(
         }
 
         AnimatedVisibility(
-            visible = showFilterScreen,
+            visible = showFilterScreen.value,
             enter = slideInHorizontally(initialOffsetX = { it }) + fadeIn(),
             exit = slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
         ) {
@@ -262,18 +264,19 @@ fun HomeScreen(
                     .background(Color.White)
             ) {
 
-                FilterColumn(onApplyFilter = {category,difficulty,time,rating ->
-                    showFilterScreen = false
-                    selectedCategory = category
-                    selectedDifficulty = difficulty
-                    selectedTime = time
-                    selectedRating = rating
-                })
+
+                FilterColumn(
+                    selectedCategory,
+                    selectedDifficulty,
+                    selectedTime,
+                    selectedRating,
+                    showFilterScreen
+                )
 
                 IconButton(
                     modifier = Modifier.align(Alignment.TopEnd).padding(12.dp),
                     onClick = {
-                        showFilterScreen = false },
+                        showFilterScreen.value = false },
                 ) {
                     Icon(Icons.Default.Close, contentDescription = "Close")
                 }

@@ -28,13 +28,10 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun FilterColumn(
-    onApplyFilter:(String,String,String,String)->Unit
+     selectedCategory:MutableState<String?>,  selectedDifficulty:MutableState<String?>,  selectedTime:MutableState<String?>,  selectedRating:MutableState<String?>, showFilterScreen:MutableState<Boolean>
 ) {
 
-    val selectedCategory = remember { mutableStateOf<String?>(null) }
-    val selectedDifficulty = remember { mutableStateOf<String?>(null) }
-    val selectedTime = remember { mutableStateOf<String?>(null) }
-    val selectedRating = remember { mutableStateOf<String?>(null) }
+
 
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -95,12 +92,7 @@ fun FilterColumn(
         Column(modifier = Modifier.align(Alignment.BottomCenter).padding(20.dp)) {
             UserActionButton(
                 text = "Apply Filter", onClick = {
-                    onApplyFilter(
-                        selectedCategory.toString(),
-                        selectedDifficulty.toString(),
-                        selectedTime.toString(),
-                        selectedRating.toString()
-                    )
+                    showFilterScreen.value = false
                 })
         }
 
