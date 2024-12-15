@@ -233,14 +233,18 @@ fun RecipeDetailsScreen(navController: NavController) {
                     modifier = Modifier
                         .width(48.dp)
                         .height(36.dp)
-                        .padding(end = 8.dp)
+                        .padding(end = 8.dp),
+                    //colorFilter = ColorFilter.tint(Color(0xFF800080))
                 )
 
                 // Chef's Name
                 Text(
                     text = recipeData?.author ?: "",
                     style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = Color(0xFF800080)
+
+
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
