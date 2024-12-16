@@ -192,7 +192,9 @@ fun HomeScreen(
 
                 // Profile Button
                 IconButton(modifier = Modifier.padding(vertical = 12.dp),
-                    onClick = { /* Your profile navigation logic */ }) {
+                    onClick = {
+                        navController.navigate(Screen.ProfileScreen.route)
+                    }) {
                     Icon(
                         imageVector = Icons.Filled.Person,
                         contentDescription = "Profile",
