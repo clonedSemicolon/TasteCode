@@ -1,3 +1,4 @@
+import android.widget.ScrollView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -12,7 +13,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,80 +27,82 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.tastecode.ui.utils.Keywords
 
 
 @Composable
 fun FilterColumn(
-     selectedCategory:MutableState<String?>,  selectedDifficulty:MutableState<String?>,  selectedTime:MutableState<String?>,  selectedRating:MutableState<String?>, showFilterScreen:MutableState<Boolean>
+    selectedCategory: MutableState<String?>,
+    selectedDifficulty: MutableState<String?>,
+    selectedTime: MutableState<String?>,
+    selectedRating: MutableState<String?>,
+    showFilterScreen: MutableState<Boolean>,
+    onApplyFilter: () -> Unit // Callback to apply filters
 ) {
-
-
-
-
     Box(modifier = Modifier.fillMaxSize()) {
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
                 .padding(12.dp)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Filter Title
             Text(
                 text = "Filter Options",
                 style = MaterialTheme.typography.titleMedium,
                 color = Color(0xFF129575)
             )
 
-
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Category: Type
             FilterLabelRow(
                 label = "Type",
-                labels = listOf("Dessert", "Main Course", "Appetizer"),
+                labels = Keywords.recipeType,
                 selectedLabel = selectedCategory,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Difficulty
             FilterLabelRow(
                 label = "Difficulty",
-                labels = listOf("Easy", "Medium", "Hard"),
+                labels = Keywords.difficultyList,
                 selectedLabel = selectedDifficulty,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Cooking Time
             FilterLabelRow(
                 label = "Cooking Time",
-                labels = listOf("15-30 min", "30-60 min", "60+ min"),
+                labels = Keywords.preparationtimeList,
                 selectedLabel = selectedTime,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Rating
             FilterLabelRow(
                 label = "Rating",
                 labels = listOf("1 Star", "2 Stars", "3 Stars", "4 Stars", "5 Stars"),
                 selectedLabel = selectedRating,
             )
-
         }
 
-        Column(modifier = Modifier.align(Alignment.BottomCenter).padding(20.dp)) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(20.dp)
+        ) {
             UserActionButton(
-                text = "Apply Filter", onClick = {
+                text = "Apply Filter",
+                onClick = {
+                    onApplyFilter()
                     showFilterScreen.value = false
-                })
+                }
+            )
         }
-
     }
 }
+
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -158,3 +163,12 @@ fun FilterLabel(
         )
     }
 }
+
+
+data class FilterCriteria(
+    val category: String? = null,
+    val difficulty: String? = null,
+    val time: String? = null,
+    val rating: String? = null
+)
+
