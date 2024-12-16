@@ -51,10 +51,18 @@ class Converters {
     }
 
     @TypeConverter
-    fun stringToMap(string: String): Map<String, String> {
-        return string.split(ENTRY_SEPARATOR).map {
-            val (key, value) = it.split(KEY_VALUE_SEPARATOR)
-            key to value
+    fun stringToMap(string: String?): Map<String, String> {
+        if (string.isNullOrEmpty()) return emptyMap() // Handle null or empty input gracefully
+
+        return string.split(ENTRY_SEPARATOR).mapNotNull { entry ->
+            val keyValue = entry.split(KEY_VALUE_SEPARATOR)
+            if (keyValue.size == 2) { // Ensure both key and value are present
+                keyValue[0] to keyValue[1]
+            } else {
+                println("Malformed entry: $entry") // Log malformed entries for debugging
+                null
+            }
         }.toMap()
     }
+
 }
