@@ -66,6 +66,7 @@ fun HomeScreen(
 
     // Loading State
     val isLoading = remember { mutableStateOf(false) }
+    if (recipes.isEmpty()) isLoading.value = true else isLoading.value = false
 
     // Filtered Recipes
     val filteredRecipes = recipes.filter { recipe ->
