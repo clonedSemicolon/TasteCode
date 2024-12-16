@@ -12,7 +12,7 @@ interface RecipeDao{
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFavourite(recipe: Recipe)
 
-    @Query("SELECT * FROM favourite_recipes ORDER BY id")
+    @Query("SELECT * FROM favourite_recipes")
     suspend fun getFavouriteRecipes(): List<Recipe>?
 
 }

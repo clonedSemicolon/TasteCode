@@ -8,4 +8,5 @@ sealed class Screen(val route: String) {
     data object HomeScreen : Screen("home_screen")
     data object RecipeDetailsScreen : Screen("recipe_details_screen/{recipeData}")
     data object FetchingDataScreen: Screen("/fetch")
+    data object ProfileScreen:Screen("/profile")
 }
