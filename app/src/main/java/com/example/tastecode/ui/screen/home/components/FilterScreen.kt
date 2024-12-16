@@ -36,6 +36,7 @@ fun FilterColumn(
     selectedDifficulty: MutableState<String?>,
     selectedTime: MutableState<String?>,
     selectedRating: MutableState<String?>,
+    selectedServing:MutableState<String?>,
     showFilterScreen: MutableState<Boolean>,
     onApplyFilter: () -> Unit // Callback to apply filters
 ) {
@@ -82,8 +83,16 @@ fun FilterColumn(
 
             FilterLabelRow(
                 label = "Rating",
-                labels = listOf("1 Star", "2 Stars", "3 Stars", "4 Stars", "5 Stars"),
+                labels = Keywords.ratingList,
                 selectedLabel = selectedRating,
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            FilterLabelRow(
+                label = "Serving",
+                labels = Keywords.servingSize,
+                selectedLabel = selectedServing,
             )
         }
 
@@ -127,7 +136,7 @@ fun FilterLabelRow(
         ) {
             labels.forEach { item ->
                 FilterLabel(
-                    label = item,
+                    label = if(label == "Rating") "$item Star" else item,
                     isSelected = item == selectedLabel.value,
                     onClick = { selectedLabel.value = if (selectedLabel.value == item) null else item }
                 )
@@ -169,6 +178,7 @@ data class FilterCriteria(
     val category: String? = null,
     val difficulty: String? = null,
     val time: String? = null,
-    val rating: String? = null
+    val rating: String? = null,
+    val serving:String? = null
 )
 

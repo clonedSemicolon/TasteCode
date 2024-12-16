@@ -49,6 +49,7 @@ fun HomeScreen(
     val selectedDifficulty = remember { mutableStateOf<String?>(null) }
     val selectedTime = remember { mutableStateOf<String?>(null) }
     val selectedRating = remember { mutableStateOf<String?>(null) }
+    val selectedServingSize = remember { mutableStateOf<String?>(null) }
 
     // State for "Apply" button
     val appliedFilters = remember {
@@ -57,7 +58,8 @@ fun HomeScreen(
                 category = null,
                 difficulty = null,
                 time = null,
-                rating = null
+                rating = null,
+                serving = null
             )
         )
     }
@@ -67,8 +69,13 @@ fun HomeScreen(
 
     // Filtered Recipes
     val filteredRecipes = recipes.filter { recipe ->
-        (searchQuery.value.isEmpty() || recipe.name?.contains(searchQuery.value, ignoreCase = true) == true) &&
-                (appliedFilters.value.category.isNullOrEmpty() || recipe.dish_type?.contains(appliedFilters.value.category?:" ") == true) &&
+        (searchQuery.value.isEmpty() || recipe.name?.contains(
+            searchQuery.value,
+            ignoreCase = true
+        ) == true) &&
+                (appliedFilters.value.category.isNullOrEmpty() || recipe.dish_type?.contains(
+                    appliedFilters.value.category ?: " "
+                ) == true) &&
                 (appliedFilters.value.difficulty.isNullOrEmpty() || appliedFilters.value.difficulty == recipe.difficult) &&
                 (appliedFilters.value.time.isNullOrEmpty() ||
                         (appliedFilters.value.time!!.contains("mins") &&
@@ -83,7 +90,9 @@ fun HomeScreen(
                                                 filterTime <= cookingTime
                                             } ?: false
                                     } == true)) &&
-                (appliedFilters.value.rating.isNullOrEmpty() || appliedFilters.value.rating?.toIntOrNull() == recipe.rattings)
+                (appliedFilters.value.rating.isNullOrEmpty() || appliedFilters.value.rating?.toInt() == recipe.rattings) &&
+                (appliedFilters.value.serving.isNullOrEmpty() || (appliedFilters.value.serving?.toInt()
+                    ?: 0) <= (recipe.serves ?: 0))
     }
 
 
@@ -297,6 +306,7 @@ fun HomeScreen(
                 selectedDifficulty = selectedDifficulty,
                 selectedTime = selectedTime,
                 selectedRating = selectedRating,
+                selectedServing = selectedServingSize,
                 showFilterScreen = showFilterScreen,
                 onApplyFilter = {
                     // Implement the logic for applying the filters here
@@ -306,7 +316,8 @@ fun HomeScreen(
                         category = selectedCategory.value,
                         difficulty = selectedDifficulty.value,
                         time = selectedTime.value,
-                        rating = selectedRating.value
+                        rating = selectedRating.value,
+                        serving = selectedServingSize.value
                     )
 
                     // Simulate a delay for better UX
