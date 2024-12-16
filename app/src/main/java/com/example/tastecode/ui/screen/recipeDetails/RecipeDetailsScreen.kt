@@ -94,12 +94,42 @@ fun RecipeDetailsScreen(navController: NavController) {
             .fillMaxSize()
             .background(Color.White)
     ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(
+                modifier = Modifier.padding(vertical = 12.dp),
+                onClick = {
+                    onBackPressedDispatcher?.onBackPressed()
+                },
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back",
+                    tint = Color.Gray
+                )
+            }
+
+            IconButton(
+                modifier = Modifier.padding(vertical = 12.dp),
+                onClick = {
+                    onBackPressedDispatcher?.onBackPressed()
+                },
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Share,
+                    contentDescription = "Share",
+                    tint = Color(0xFF129575)
+                )
+            }
+        }
         // Image Section with Overlays
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp) // Increased height to give more space for image stretching
-                .padding(top = 17.5.dp) // Added top padding to move the image slightly down
+                .height(300.dp) // Increased height to give more space for image stretching // Added top padding to move the image slightly down
         ) {
             AsyncImage(
                 model = recipeData?.image,
@@ -148,7 +178,7 @@ fun RecipeDetailsScreen(navController: NavController) {
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = recipeData?.serves.toString() ?: "",
+                        text = recipeData?.times?.get("Cooking").toString() ?: "",
                         color = animatedColor,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
@@ -160,9 +190,9 @@ fun RecipeDetailsScreen(navController: NavController) {
             Box(
                 modifier = Modifier
                     .padding(16.dp)
-                    .align(Alignment.BottomStart) // Aligns to the left side (front of the clock)
+                    .align(Alignment.TopEnd) // Aligns to the left side (front of the clock)
                     .background(
-                        color = Color(0xFFFFF9C4),
+                        color = Color.Yellow,
                         shape = RoundedCornerShape(8.dp)
                     )
                     .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -172,45 +202,15 @@ fun RecipeDetailsScreen(navController: NavController) {
                         painter = painterResource(id = R.drawable.custom_star),
                         contentDescription = "star Icon",
                         modifier = Modifier.size(20.dp),
-                        colorFilter = ColorFilter.tint(Color.Magenta)
+                        colorFilter = ColorFilter.tint(Color(0xFF129575))
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = recipeData?.serves.toString() ?: "")
+                    Text(text = recipeData?.serves.toString() ?: "", color = Color(0xFF129575), fontWeight = FontWeight.W500)
                 }
             }
         }
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(
-                modifier = Modifier.padding(vertical = 12.dp),
-                onClick = {
-                    onBackPressedDispatcher?.onBackPressed()
-                },
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = Color.Gray
-                )
-            }
 
-            IconButton(
-                modifier = Modifier.padding(vertical = 12.dp),
-                onClick = {
-                    onBackPressedDispatcher?.onBackPressed()
-                },
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Share,
-                    contentDescription = "Share",
-                    tint = Color(0xFF129575)
-                )
-            }
-        }
 
         Column(
             modifier = Modifier
@@ -308,7 +308,7 @@ fun RecipeDetailsScreen(navController: NavController) {
                 ) {
                     Text("Ingredient")
                 }
-                Spacer(modifier = Modifier.width(16.dp))
+
                 Button(
                     onClick = { selectedTab = 1 },
                     colors = ButtonDefaults.buttonColors(
@@ -338,12 +338,16 @@ fun RecipeDetailsScreen(navController: NavController) {
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = "${recipeData?.serves} Serves" ?: "",
+                            fontWeight = FontWeight.W600,
+                            color = Color(0xFF129575),
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
 
                     Text(
                         text = "${recipeData?.ingredients?.size ?: 0} Items",
+                        fontWeight = FontWeight.W600,
+                        color = Color(0xFF129575),
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -365,7 +369,7 @@ fun RecipeDetailsScreen(navController: NavController) {
                                     .fillMaxWidth()
                                     .padding(vertical = 4.dp),
                                 colors = CardDefaults.cardColors(
-                                    containerColor = Color(0xFFF5F5F5)
+                                    containerColor = Color(0xFF129575).copy(0.2F)
                                 )
                             ) {
                                 Row(
@@ -376,6 +380,7 @@ fun RecipeDetailsScreen(navController: NavController) {
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Restaurant,
+                                        tint = Color(0xFF129575),
                                         contentDescription = null,
                                         modifier = Modifier
                                             .size(40.dp)
@@ -403,7 +408,7 @@ fun RecipeDetailsScreen(navController: NavController) {
                                     .fillMaxWidth()
                                     .padding(vertical = 4.dp),
                                 colors = CardDefaults.cardColors(
-                                    containerColor = Color(0xFFF5F5F5)
+                                    containerColor = Color(0xFF129575).copy(0.2F)
                                 )
                             ) {
                                 Row(
@@ -414,18 +419,19 @@ fun RecipeDetailsScreen(navController: NavController) {
                                 ) {
                                     Text(
                                         text = "${index + 1}",
-                                        style = MaterialTheme.typography.titleMedium,
+                                        style = MaterialTheme.typography.bodySmall,
                                         modifier = Modifier
                                             .size(40.dp)
-                                            .background(Color.White, RoundedCornerShape(8.dp))
+                                            .background(Color(0xFF129575), RoundedCornerShape(8.dp))
                                             .padding(8.dp),
                                         textAlign = TextAlign.Center,
-                                        fontFamily = Poppins,
+                                        color = Color.White
                                     )
                                     Spacer(modifier = Modifier.width(16.dp))
                                     Text(
                                         text = step,
                                         style = MaterialTheme.typography.bodyLarge,
+                                        color = Color.Black,
                                         modifier = Modifier.weight(1f)
                                     )
                                 }
