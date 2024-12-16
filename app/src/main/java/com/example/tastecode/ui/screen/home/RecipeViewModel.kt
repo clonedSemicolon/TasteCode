@@ -6,6 +6,10 @@ import com.example.tastecode.data.Recipe
 class RecipeViewModel(
     private val repository: RecipeRepository) : ViewModel() {
     val recipes: LiveData<List<Recipe>> = repository.getRecipes()
+
+    fun getRecipes(): List<Recipe> {
+        return recipes.value?: emptyList()
+    }
 }
 
 

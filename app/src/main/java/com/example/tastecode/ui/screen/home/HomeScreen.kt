@@ -41,113 +41,136 @@ fun HomeScreen(
         viewModel(factory = RecipeViewModelFactory(RecipeRepository()))
     val recipes by recipeViewModel.recipes.observeAsState(emptyList())
 
-
     // State to manage search query and filters
     val searchQuery = remember { mutableStateOf("") }
 
+    // Filter States
     val selectedCategory = remember { mutableStateOf<String?>(null) }
     val selectedDifficulty = remember { mutableStateOf<String?>(null) }
     val selectedTime = remember { mutableStateOf<String?>(null) }
     val selectedRating = remember { mutableStateOf<String?>(null) }
 
+    // State for "Apply" button
+    val appliedFilters = remember {
+        mutableStateOf(
+            FilterCriteria(
+                category = null,
+                difficulty = null,
+                time = null,
+                rating = null
+            )
+        )
+    }
 
-    // Function to filter recipes based on search and filters
+    // Loading State
+    val isLoading = remember { mutableStateOf(false) }
+
+    // Filtered Recipes
     val filteredRecipes = recipes.filter { recipe ->
         (searchQuery.value.isEmpty() || recipe.name?.contains(searchQuery.value, ignoreCase = true) == true) &&
-                (selectedCategory.value.isNullOrEmpty() || selectedCategory.value == recipe.dish_type) &&
-                (selectedDifficulty.value.isNullOrEmpty() || selectedDifficulty.value == recipe.difficult) &&
-                (selectedTime.value.isNullOrEmpty() || selectedTime.value == recipe.times?.get("total")) &&
-                (selectedRating.value.isNullOrEmpty() || selectedRating.value?.toIntOrNull() == recipe.rattings)
+                (appliedFilters.value.category.isNullOrEmpty() || appliedFilters.value.category == recipe.dish_type) &&
+                (appliedFilters.value.difficulty.isNullOrEmpty() || appliedFilters.value.difficulty == recipe.difficult) &&
+                (appliedFilters.value.time.isNullOrEmpty() ||
+                        (appliedFilters.value.time!!.contains("mins") &&
+                                appliedFilters.value.time!!.split("mins")[0]
+                                    .filterNot { it.isWhitespace() }
+                                    .toIntOrNull()?.let { filterTime ->
+                                        recipe.times?.get("Cooking")
+                                            ?.split(' ')
+                                            ?.getOrNull(0)
+                                            ?.toIntOrNull()
+                                            ?.let { cookingTime ->
+                                                filterTime <= cookingTime
+                                            } ?: false
+                                    } == true)) &&
+                (appliedFilters.value.rating.isNullOrEmpty() || appliedFilters.value.rating?.toIntOrNull() == recipe.rattings)
     }
 
 
 
+    // Filter Screen Visibility
+    val showFilterScreen = remember { mutableStateOf(false) }
 
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet(
+                drawerContentColor = Color(0xFF129575),
+                modifier = Modifier.fillMaxWidth(0.7f),
+            ) {
+                NavigationDrawerItem(
+                    icon = {
+                        Icon(
+                            Icons.Filled.QuestionMark,
+                            contentDescription = "FAQ",
+                            tint = Color(0xFF129575)
+                        )
+                    },
+                    label = {
+                        Text(
+                            "Faq",
+                            color = Color(0xFF129575),
+                            fontWeight = FontWeight(600)
+                        )
+                    },
+                    onClick = {
+                        scope.launch {
 
-    var showFilterScreen = remember { mutableStateOf(false) }
+                        }
+                    },
+                    selected = false
+                )
 
-    if (filteredRecipes.isNotEmpty()) {
-        ModalNavigationDrawer(
-            drawerState = drawerState,
-            drawerContent = {
-                ModalDrawerSheet(
-                    drawerContentColor = Color(0xFF129575),
-                    modifier = Modifier.fillMaxWidth(0.7f),
-                ) {
-                    NavigationDrawerItem(
-                        icon = {
-                            Icon(
-                                Icons.Filled.QuestionMark,
-                                contentDescription = "FAQ",
-                                tint = Color(0xFF129575)
-                            )
-                        },
-                        label = {
-                            Text(
-                                "Faq",
-                                color = Color(0xFF129575),
-                                fontWeight = FontWeight(600)
-                            )
-                        },
-                        onClick = {
-                            scope.launch {
+                NavigationDrawerItem(
+                    icon = {
+                        Icon(
+                            Icons.Filled.Message,
+                            contentDescription = "About",
+                            tint = Color(0xFF129575)
+                        )
+                    },
+                    label = {
+                        Text(
+                            "About",
+                            color = Color(0xFF129575),
+                            fontWeight = FontWeight(600)
+                        )
+                    },
+                    onClick = {
+                        scope.launch {
 
-                            }
-                        },
-                        selected = false
-                    )
-
-                    NavigationDrawerItem(
-                        icon = {
-                            Icon(
-                                Icons.Filled.Message,
-                                contentDescription = "About",
-                                tint = Color(0xFF129575)
-                            )
-                        },
-                        label = {
-                            Text(
-                                "About",
-                                color = Color(0xFF129575),
-                                fontWeight = FontWeight(600)
-                            )
-                        },
-                        onClick = {
-                            scope.launch {
-
-                            }
-                        },
-                        selected = false
-                    )
-                    NavigationDrawerItem(
-                        icon = {
-                            Icon(
-                                Icons.Filled.Logout,
-                                contentDescription = "Menu",
-                                tint = Color(0xFF129575)
-                            )
-                        },
-                        label = {
-                            Text(
-                                "Logout",
-                                color = Color(0xFF129575),
-                                fontWeight = FontWeight(600)
-                            )
-                        },
-                        onClick = {
-                            scope.launch {
-                                navController.navigate(Screen.LoginScreen.route)
-                                SharedData.userData = null
-                            }
-                        },
-                        selected = false
-                    )
-
-                }
+                        }
+                    },
+                    selected = false
+                )
+                NavigationDrawerItem(
+                    icon = {
+                        Icon(
+                            Icons.Filled.Logout,
+                            contentDescription = "Menu",
+                            tint = Color(0xFF129575)
+                        )
+                    },
+                    label = {
+                        Text(
+                            "Logout",
+                            color = Color(0xFF129575),
+                            fontWeight = FontWeight(600)
+                        )
+                    },
+                    onClick = {
+                        scope.launch {
+                            navController.navigate(Screen.LoginScreen.route)
+                            SharedData.userData = null
+                        }
+                    },
+                    selected = false
+                )
             }
-        ) {
-            Column(modifier = Modifier.padding(horizontal = 12.dp)) {
-                Spacer(modifier = Modifier.height(32.dp))
+        }
+    ) {
+        Column(modifier = Modifier.padding(horizontal = 12.dp)) {
+            Spacer(modifier = Modifier.height(32.dp))
 
                 // Header with menu icon to open the drawer
                 Row(
@@ -241,8 +264,12 @@ fun HomeScreen(
                 }
 
 
-                Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
+            // Show Loading if filtering
+            if (isLoading.value) {
+                LoadingScreen()
+            } else {
                 // Recipe List
                 RecipeList(
                     navHostController = navController,
@@ -251,42 +278,58 @@ fun HomeScreen(
                 )
             }
         }
-
-        AnimatedVisibility(
-            visible = showFilterScreen.value,
-            enter = slideInHorizontally(initialOffsetX = { it }) + fadeIn(),
-            exit = slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(0.8f)
-                    .fillMaxHeight()
-                    .background(Color.White)
-            ) {
-
-
-                FilterColumn(
-                    selectedCategory,
-                    selectedDifficulty,
-                    selectedTime,
-                    selectedRating,
-                    showFilterScreen
-                )
-
-                IconButton(
-                    modifier = Modifier.align(Alignment.TopEnd).padding(12.dp),
-                    onClick = {
-                        showFilterScreen.value = false },
-                ) {
-                    Icon(Icons.Default.Close, contentDescription = "Close")
-                }
-            }
-        }
-    } else {
-        LoadingScreen()
     }
 
+    // Animated Visibility for Filter Screen
+    AnimatedVisibility(
+        visible = showFilterScreen.value,
+        enter = slideInHorizontally(initialOffsetX = { it }) + fadeIn(),
+        exit = slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.8f)
+                .fillMaxHeight()
+                .background(Color.White)
+        ) {
+            FilterColumn(
+                selectedCategory = selectedCategory,
+                selectedDifficulty = selectedDifficulty,
+                selectedTime = selectedTime,
+                selectedRating = selectedRating,
+                showFilterScreen = showFilterScreen,
+                onApplyFilter = {
+                    // Implement the logic for applying the filters here
+                    isLoading.value = true // Start the loading state
 
+                    appliedFilters.value = FilterCriteria(
+                        category = selectedCategory.value,
+                        difficulty = selectedDifficulty.value,
+                        time = selectedTime.value,
+                        rating = selectedRating.value
+                    )
+
+                    // Simulate a delay for better UX
+                    scope.launch {
+                        kotlinx.coroutines.delay(500)
+                        isLoading.value = false // Stop loading state
+                    }
+                }
+            )
+
+            IconButton(
+                modifier = Modifier.align(Alignment.TopEnd).padding(12.dp),
+                onClick = {
+                    showFilterScreen.value = false
+                },
+            ) {
+                Icon(Icons.Default.Close, contentDescription = "Close")
+            }
+        }
+    }
 }
+
+
+
 
 

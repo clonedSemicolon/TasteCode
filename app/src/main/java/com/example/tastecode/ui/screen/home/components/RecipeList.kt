@@ -26,7 +26,7 @@ fun RecipeList(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(recipes) { recipe ->
+        items(recipeList) { recipe ->
             RecipeItem(
                 recipe = recipe,
                 onClick = {
