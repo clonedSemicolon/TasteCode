@@ -68,7 +68,7 @@ fun HomeScreen(
     // Filtered Recipes
     val filteredRecipes = recipes.filter { recipe ->
         (searchQuery.value.isEmpty() || recipe.name?.contains(searchQuery.value, ignoreCase = true) == true) &&
-                (appliedFilters.value.category.isNullOrEmpty() || appliedFilters.value.category == recipe.dish_type) &&
+                (appliedFilters.value.category.isNullOrEmpty() || recipe.dish_type?.contains(appliedFilters.value.category?:" ") == true) &&
                 (appliedFilters.value.difficulty.isNullOrEmpty() || appliedFilters.value.difficulty == recipe.difficult) &&
                 (appliedFilters.value.time.isNullOrEmpty() ||
                         (appliedFilters.value.time!!.contains("mins") &&
