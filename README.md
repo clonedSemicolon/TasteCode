@@ -52,14 +52,13 @@ Before setting up the project, ensure the following:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/tastecode.git
-cd tastecode
+git clone https://bitbucket.org/devs_kitchen/cis-553-projects/src/master/
 ```
 
 ### Step 2: Open in Android Studio
 
 1. Launch Android Studio.
-2. Select **File > Open** and navigate to the `tastecode` directory.
+2. Select **File > Open** and navigate to the directory.
 3. Sync the project with Gradle by clicking **Sync Now** when prompted.
 
 ### Step 3: Configure Firebase
@@ -110,18 +109,38 @@ throw RuntimeException("Test Crash")
 
 ---
 
+
+
+## Running the app:
+
+### Option 1: Using Android Studio
+
+Follow the instructions in the "Build and Run" section above to run the app directly from Android Studio.
+
+### Option 2: Using the Prebuilt APK
+
+1. Download the latest .apk file from the Releases section in Bitbucket.
+2. Transfer the .apk file to your Android device.
+3. Enable Install Unknown Apps for the file manager or browser used to access the APK.
+4. Locate the file on your device and tap to install.
+5. Launch the app from your device's app drawer.
+
+
+
+
 ## File Structure
 
 ```plaintext
 |-- app/
 |   |-- src/
 |   |-- main/
-|       |-- java/
+|       |-- java+kotlin/
 |           |-- com.example.tastecode/
 |               |-- ui/  # Jetpack Compose UI Components
 |               |-- data/  # Room Entities, DAO, and Firestore Integration
-|               |-- repository/  # Data Repositories
-|               |-- viewmodel/  # ViewModels for UI
+|               |-- business/  # Business Logics
+|               |-- Components/  # ViewModels for UI
+                |-- MainActivity.kt
 |       |-- res/  # Resources (XML, Drawables, etc.)
 |   |-- google-services.json  # Firebase Configuration
 |-- build.gradle  # Project Configuration
@@ -147,27 +166,6 @@ throw RuntimeException("Test Crash")
 
 ---
 
-## Contribution
-
-We welcome contributions! To contribute:
-
-1. Fork the repository.
-2. Create a feature branch:
-   ```bash
-   git checkout -b feature-name
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m "Feature: Add new functionality"
-   ```
-4. Push to your fork:
-   ```bash
-   git push origin feature-name
-   ```
-5. Submit a pull request.
-
----
-
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
@@ -176,5 +174,5 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-For queries or support, contact us at [support@tastecodeapp.com](mailto:support@tastecodeapp.com).
+For queries or support, contact us at [support@tastecodeapp.com](mailto:avishak@umich.edu).
 
