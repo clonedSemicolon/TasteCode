@@ -119,7 +119,7 @@ Follow the instructions in the "Build and Run" section above to run the app dire
 
 ### Option 2: Using the Prebuilt APK
 
-1. Download the latest .apk file from the Releases section in Bitbucket.
+1. Download the latest .apk file from the Downloads section in Bitbucket.
 2. Transfer the .apk file to your Android device.
 3. Enable Install Unknown Apps for the file manager or browser used to access the APK.
 4. Locate the file on your device and tap to install.
