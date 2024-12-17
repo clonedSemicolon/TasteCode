@@ -5,6 +5,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.tastecode.business.route.Screen
+import com.example.tastecode.ui.screen.aboutus.AboutUsPage
 import com.example.tastecode.ui.screen.fogotpassword.ForgotPasswordScreen
 import com.example.tastecode.ui.screen.loading.LoadingScreen
 import com.example.tastecode.ui.screen.profile.ProfileScreen
@@ -37,6 +38,12 @@ fun AppNavHost(navController: NavHostController) {
         }
         composable(Screen.ProfileScreen.route){
             ProfileScreen(navController)
+        }
+        composable(Screen.FaqScreen.route) { 
+            FAQPage(navController = navController)
+        }
+        composable(Screen.AboutScreen.route) { 
+            AboutUsPage(navController = navController)
         }
 
     }

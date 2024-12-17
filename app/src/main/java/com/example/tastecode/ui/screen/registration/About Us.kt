@@ -47,16 +47,6 @@ fun AboutUsPage(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // Header Section
-                Text(
-                    text = "About Us",
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 24.dp),
-                    textAlign = TextAlign.Center
-                )
 
                 // Team Image
                 Box(
@@ -66,7 +56,7 @@ fun AboutUsPage(navController: NavController) {
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.downarrow), // Replace with your team image
+                        painter = painterResource(R.drawable.logo), // Replace with your team image
                         contentDescription = "Team Image",
                         modifier = Modifier
                             .size(100.dp)
@@ -122,14 +112,11 @@ fun AboutUsPage(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Back Button
-                Button(
-                    onClick = { navController.popBackStack() },
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
-                ) {
-                    Text(text = "Back", color = MaterialTheme.colorScheme.onPrimary)
-                }
+
+
+                Text(text = "Version:1.0.0", color = MaterialTheme.colorScheme.primary)
+                Text(text = "Last Update: 16 Dec, 2024", color = MaterialTheme.colorScheme.primary)
+
             }
         }
     }

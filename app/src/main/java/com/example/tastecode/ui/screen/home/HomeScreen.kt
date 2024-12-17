@@ -6,10 +6,12 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -21,12 +23,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.tastecode.R
 import com.example.tastecode.business.route.Screen
 import com.example.tastecode.business.utilities.BusinessUtils.executeInBackground
 import com.example.tastecode.data.Recipe
@@ -108,10 +112,43 @@ fun HomeScreen(
 
 
     ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
+
         ModalDrawerSheet(
             drawerContentColor = Color(0xFF129575),
-            modifier = Modifier.fillMaxWidth(0.7f),
+            modifier = Modifier.fillMaxWidth(0.7f).padding(0.dp),
         ) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xFF129575))
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // Example Avatar or Image
+                Surface(
+                    modifier = Modifier.size(72.dp),
+                    shape = CircleShape,
+                    color = Color.LightGray
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.logo),
+                        contentDescription = "Profile Picture",
+                        modifier = Modifier.size(72.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "TasteCode",
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+
+
+
             NavigationDrawerItem(icon = {
                 Icon(
                     Icons.Filled.QuestionMark,
@@ -124,7 +161,7 @@ fun HomeScreen(
                 )
             }, onClick = {
                 scope.launch {
-
+                    navController.navigate(Screen.FaqScreen.route)
                 }
             }, selected = false
             )
@@ -141,7 +178,7 @@ fun HomeScreen(
                 )
             }, onClick = {
                 scope.launch {
-
+                    navController.navigate(Screen.AboutScreen.route)
                 }
             }, selected = false
             )

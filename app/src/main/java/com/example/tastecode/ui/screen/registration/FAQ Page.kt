@@ -43,13 +43,17 @@ fun FAQPage(navController: NavController) {
                     .fillMaxSize()
                     .padding(16.dp)
             ) {
+
+                Spacer(modifier = Modifier.height(24.dp))
                 // FAQ Header
                 Text(
-                    text = "Frequently Asked Questions",
+                    text = "FAQ",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    modifier = Modifier
+                        .padding(bottom = 16.dp)
+                        .align(Alignment.CenterHorizontally)
                 )
 
                 // FAQ Items
@@ -85,10 +89,11 @@ fun FAQItem(question: String, answer: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .clickable { isExpanded = !isExpanded },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surface
+            containerColor = MaterialTheme.colorScheme.background
         )
     ) {
         Column(
@@ -96,21 +101,30 @@ fun FAQItem(question: String, answer: String) {
                 .padding(16.dp)
                 .fillMaxWidth()
         ) {
-            Text(
-                text = question,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { isExpanded = !isExpanded }
-            )
+            Row(horizontalArrangement = Arrangement.SpaceAround) {
+
+                Text(
+                    text = question,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
+
+                )
+
+                Icon(
+                    painter = painterResource(if (isExpanded) R.drawable.baseline_keyboard_arrow_up_24 else R.drawable.baseline_keyboard_arrow_down_24),
+                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+                    modifier = Modifier.size(20.dp),
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
+
 
             if (isExpanded) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = answer,
-                    fontSize = 16.sp,
+                    fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
                 )
             }

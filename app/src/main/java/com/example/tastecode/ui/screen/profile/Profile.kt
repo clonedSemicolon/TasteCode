@@ -269,7 +269,7 @@ fun RecipeCard(recipe: Recipe) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFF129575))
+                .background(Color(0xFF129575).copy(0.2F))
                 .padding(8.dp)
         ) {
             AsyncImage(
